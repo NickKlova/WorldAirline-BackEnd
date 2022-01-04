@@ -1560,6 +1560,21 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "WADatabase/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.13",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "bin/placeholder/WADatabase.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WADatabase.dll": {}
+        }
       }
     }
   },
@@ -5775,6 +5790,11 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "WADatabase/1.0.0": {
+      "type": "project",
+      "path": "../WADatabase/WADatabase.csproj",
+      "msbuildProject": "../WADatabase/WADatabase.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5783,7 +5803,8 @@
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.13",
       "Microsoft.Extensions.Configuration.Json >= 5.0.0",
       "Newtonsoft.Json >= 13.0.1",
-      "Swashbuckle.AspNetCore >= 5.6.3"
+      "Swashbuckle.AspNetCore >= 5.6.3",
+      "WADatabase >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -5812,7 +5833,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj": {
+              "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

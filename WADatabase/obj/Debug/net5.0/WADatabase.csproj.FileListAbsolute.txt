@@ -1,0 +1,15 @@
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\WADatabase.deps.json
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\WADatabase.runtimeconfig.json
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\WADatabase.runtimeconfig.dev.json
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\WADatabase.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\ref\WADatabase.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\bin\Debug\net5.0\WADatabase.pdb
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.csproj.AssemblyReference.cache
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.AssemblyInfoInputs.cache
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.AssemblyInfo.cs
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.csproj.CoreCompileInputs.cache
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\ref\WADatabase.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.pdb
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WADatabase\obj\Debug\net5.0\WADatabase.genruntimeconfig.cache
