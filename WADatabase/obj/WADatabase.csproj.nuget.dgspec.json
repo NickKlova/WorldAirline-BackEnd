@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj": {}
+    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj": {
+    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
-        "projectName": "WorldAirlineServer",
-        "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
+        "projectUniqueName": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj",
+        "projectName": "WADatabase",
+        "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj",
         "packagesPath": "C:\\Users\\KlovaNick\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\obj\\",
+        "outputPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KlovaNick\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -57,10 +57,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[5.6.3, )"
             }
           },
           "imports": [
@@ -74,9 +70,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
