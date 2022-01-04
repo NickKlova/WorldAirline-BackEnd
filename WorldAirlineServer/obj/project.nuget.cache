@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "8pUJGAIbTFrPYm7H8IcDTPeSNy4+dWWMPkAgoLtvnX+tA2jcSIB4Uz60ZPVG37WsFm39uUvNx7YWq9AjY0xejg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
