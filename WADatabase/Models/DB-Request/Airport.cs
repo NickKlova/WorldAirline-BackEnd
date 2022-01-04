@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace WADatabase
+namespace WADatabase.Models.DB_Request
 {
     public partial class Airport
     {

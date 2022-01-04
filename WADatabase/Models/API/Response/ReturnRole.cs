@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WADatabase.Models.API.Response
 {
-    class ReturnRole
+    public class ReturnRole
     {
+        public int Id { get; set; }
+        public string Role { get; set; }
     }
 }

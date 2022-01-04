@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace WADatabase.Models.API.Response
 {
-    class ReturnAccount
+    public class ReturnAccount
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public decimal? Balance { get; set; }
+        public string Login { get; set; }
+        public ReturnRole Role { get; set; }
     }
 }
