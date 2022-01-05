@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace WorldAirlineServer.Controllers
     {
         [HttpGet]
         [Route("/getAccountById")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAccountById(int id)
         {
             try
@@ -34,6 +36,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpGet]
         [Route("/getAccountByLogin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAccountByLogin(string login)
         {
             try
@@ -73,6 +76,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPut]
         [Route("/changeBalance")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeBalace(decimal amount, string login)
         {
             try
@@ -90,6 +94,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPut]
         [Route("/changeLogin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeLogin(string oldLogin, string newLogin)
         {
             try
@@ -107,6 +112,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPut]
         [Route("/changePassword")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangePassword(string login, string password)
         {
             try
@@ -124,6 +130,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpDelete]
         [Route("/deleteAccount")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteAccount(string login)
         {
             try

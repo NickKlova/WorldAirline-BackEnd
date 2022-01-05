@@ -64,3 +64,6 @@ C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirline
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSSDK.DynamoDBv2.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSDatabase.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSDatabase.pdb
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\JWTAuth.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\JWTAuth.pdb

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
@@ -213,6 +214,38 @@ namespace WADatabase.Administration.Managment
                 if (result.State != EntityState.Detached)
                     throw new Exception("Bad request");
             }
+        }
+
+        public async Task<ClaimsIdentity> GetIdentity(string login, string password)
+        {
+            WorldAirlinesClient db = new WorldAirlinesClient();
+
+            await using (db.context)
+            {
+                var account = db.context.Accounts
+                   .ToListAsync()
+                   .Result
+                   .FirstOrDefault(x => x.Login == login && x.Password == password);
+
+                var role = db.context.Roles
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
+
+                if (account != null)
+                {
+                    var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, account.Login),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Role1)
+                };
+                    ClaimsIdentity claimsIdentity =
+                    new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                        ClaimsIdentity.DefaultRoleClaimType);
+                    return claimsIdentity;
+                }
+            }
+            return null;
         }
     }
 }
