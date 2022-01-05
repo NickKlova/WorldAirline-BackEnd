@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "OkN5ZT7LkSTqm/oCgdAtzsn7ysGCc23zX8TrWsc9WjWUYVF0xfOOIuChPedTs/4+Tx0ZJaSLfXjxrIbe0pb0ZA==",
+  "dgSpecHash": "qIoHqYuBojtN6UsdQdhqMQAIlHlgJfwV7cXYbEbA6tgvHNshja9Pav9ABaPY14z9jzzoj3eAyWIU9m8bQUzcCg==",
   "success": true,
   "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.core\\3.7.5.9\\awssdk.core.3.7.5.9.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.2.5\\awssdk.dynamodbv2.3.7.2.5.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

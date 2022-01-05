@@ -60,3 +60,7 @@ C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirline
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\obj\Debug\net5.0\ref\WorldAirlineServer.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\obj\Debug\net5.0\WorldAirlineServer.pdb
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\obj\Debug\net5.0\WorldAirlineServer.genruntimeconfig.cache
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSSDK.Core.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSSDK.DynamoDBv2.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSDatabase.dll
+C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\WorldAirlineServer\bin\Debug\net5.0\AWSDatabase.pdb

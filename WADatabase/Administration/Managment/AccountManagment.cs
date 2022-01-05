@@ -23,7 +23,7 @@ namespace WADatabase.Administration.Managment
                 Balance = 0,
                 Login = incomingData.Login,
                 Password = incomingData.Password,
-                RoleId = 2
+                RoleId = 3
             };
 
             await using (db.context)
