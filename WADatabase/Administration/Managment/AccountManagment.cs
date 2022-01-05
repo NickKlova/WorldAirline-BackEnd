@@ -23,7 +23,7 @@ namespace WADatabase.Administration.Managment
                 Balance = 0,
                 Login = incomingData.Login,
                 Password = incomingData.Password,
-                RoleId = 1
+                RoleId = 2
             };
 
             await using (db.context)
@@ -67,21 +67,43 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
-                response = new Models.API.Response.ReturnAccount
+                var role = db.context.Roles
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
+
+                if (role != null)
                 {
-                    Id = account.Id,
-                    Name = account.Name,
-                    Surname = account.Surname,
-                    Email = account.Email,
-                    Phone = account.Phone,
-                    Balance = account.Balance,
-                    Login = account.Login,
-                    Role = new Models.API.Response.ReturnRole
+                    response = new Models.API.Response.ReturnAccount
                     {
-                        Id = account.Role.Id,
-                        Role = account.Role.Role1
-                    }
-                };
+                        Id = account.Id,
+                        Name = account.Name,
+                        Surname = account.Surname,
+                        Email = account.Email,
+                        Phone = account.Phone,
+                        Balance = account.Balance,
+                        Login = account.Login,
+                        Role = new Models.API.Response.ReturnRole
+                        {
+                            Id = role.Id,
+                            Role = role.Role1
+                        }
+                    };
+                }
+                else
+                {
+                    response = new Models.API.Response.ReturnAccount
+                    {
+                        Id = account.Id,
+                        Name = account.Name,
+                        Surname = account.Surname,
+                        Email = account.Email,
+                        Phone = account.Phone,
+                        Balance = account.Balance,
+                        Login = account.Login,
+                        Role = null
+                    };
+                }
             }
 
             return response;
@@ -100,27 +122,49 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .FirstOrDefault(x => x.Login == login);
 
-                response = new Models.API.Response.ReturnAccount
+                var role = db.context.Roles
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
+
+                if (role != null)
                 {
-                    Id = account.Id,
-                    Name = account.Name,
-                    Surname = account.Surname,
-                    Email = account.Email,
-                    Phone = account.Phone,
-                    Balance = account.Balance,
-                    Login = account.Login,
-                    Role = new Models.API.Response.ReturnRole
+                    response = new Models.API.Response.ReturnAccount
                     {
-                        Id = account.Role.Id,
-                        Role = account.Role.Role1
-                    }
-                };
+                        Id = account.Id,
+                        Name = account.Name,
+                        Surname = account.Surname,
+                        Email = account.Email,
+                        Phone = account.Phone,
+                        Balance = account.Balance,
+                        Login = account.Login,
+                        Role = new Models.API.Response.ReturnRole
+                        {
+                            Id = role.Id,
+                            Role = role.Role1
+                        }
+                    };
+                }
+                else
+                {
+                    response = new Models.API.Response.ReturnAccount
+                    {
+                        Id = account.Id,
+                        Name = account.Name,
+                        Surname = account.Surname,
+                        Email = account.Email,
+                        Phone = account.Phone,
+                        Balance = account.Balance,
+                        Login = account.Login,
+                        Role = null
+                    };
+                }
             }
 
             return response;
         }
 
-        public async Task ChangeLoginAsync(string login)
+        public async Task ChangeLoginAsync(string oldLogin, string newLogin)
         {
             WorldAirlinesClient db = new WorldAirlinesClient();
 
@@ -129,9 +173,9 @@ namespace WADatabase.Administration.Managment
                 var account = db.context.Accounts
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.Login == login);
+                    .FirstOrDefault(x => x.Login == oldLogin);
 
-                account.Login = login;
+                account.Login = newLogin;
                 db.context.SaveChanges();
             }
         }
@@ -166,7 +210,7 @@ namespace WADatabase.Administration.Managment
                 var result = db.context.Remove(account);
                 db.context.SaveChanges();
 
-                if (result.State != EntityState.Deleted)
+                if (result.State != EntityState.Detached)
                     throw new Exception("Bad request");
             }
         }

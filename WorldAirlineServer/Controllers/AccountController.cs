@@ -90,12 +90,12 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPut]
         [Route("/changeLogin")]
-        public async Task<IActionResult> ChangeLogin(string login)
+        public async Task<IActionResult> ChangeLogin(string oldLogin, string newLogin)
         {
             try
             {
                 AccountManagment account = new AccountManagment();
-                await account.ChangeLoginAsync(login);
+                await account.ChangeLoginAsync(oldLogin, newLogin);
 
                 return StatusCode(201, "Updated");
             }
