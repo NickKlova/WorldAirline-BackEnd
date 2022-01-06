@@ -128,6 +128,23 @@ namespace WorldAirlineServer.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("/giveRole")]
+        public async Task<IActionResult> GiveRole(string role, string login)
+        {
+            try
+            {
+                AccountManagment account = new AccountManagment();
+                await account.GiveRole(role, login);
+
+                return StatusCode(201, "Updated");
+            }
+            catch(Exception e)
+            {
+                return StatusCode(404, e.Message);
+            }
+        }
+
         [HttpDelete]
         [Route("/deleteAccount")]
         [Authorize(Roles = "admin")]

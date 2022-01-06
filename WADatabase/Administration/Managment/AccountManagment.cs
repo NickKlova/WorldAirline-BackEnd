@@ -216,6 +216,30 @@ namespace WADatabase.Administration.Managment
             }
         }
 
+        public async Task GiveRole(string incRole, string login)
+        {
+            WorldAirlinesClient db = new WorldAirlinesClient();
+
+            await using (db.context)
+            {
+                var account = db.context.Accounts
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Login == login);
+
+                int? role = db.context.Roles
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Role1 == incRole).Id;
+
+                if (role == null)
+                    throw new Exception("Not found");
+                else
+                    account.RoleId = role;
+                db.context.SaveChanges();
+            }
+        }
+
         public async Task<ClaimsIdentity> GetIdentity(string login, string password)
         {
             WorldAirlinesClient db = new WorldAirlinesClient();
