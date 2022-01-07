@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,7 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPost]
         [Route("/createAccount")]
+        [EnableCors("WACorsPolicy")]
         public async Task<IActionResult> CreateAccount([FromBody] ReceivedAccount incomingData)
         {
             try

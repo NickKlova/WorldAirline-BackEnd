@@ -41,6 +41,14 @@ namespace WorldAirlineServer
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorldAirlineServer", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("WACorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
             var credentials = new BasicAWSCredentials("AKIAUNU6OOSDZ37UEL6I", "9j7qQUFMsACIgYQT1pvkmRjrWXe/pSZiQNBDCqwz");
             var config = new AmazonDynamoDBConfig()
             {
@@ -93,6 +101,8 @@ namespace WorldAirlineServer
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 
