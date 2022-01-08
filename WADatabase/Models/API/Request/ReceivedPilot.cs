@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WADatabase.Models.API.Request
 {
-    class ReceivedPilot
+    public class ReceivedPilot
     {
+        public int FlyingHours { get; set; }
+        public int AccountId { get; set; }
     }
 }
