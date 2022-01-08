@@ -33,5 +33,76 @@ namespace WADatabase.Administration.Managment
                 db.context.SaveChanges();
             }
         }
+        public async Task<Models.API.Response.ReturnPassenger> GetPassengerByPassportSeriesAsync(string passportSeries)
+        {
+            WorldAirlinesClient db = new WorldAirlinesClient();
+            
+            await using (db.context)
+            {
+                var passenger = db.context.Passengers
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.PassportSeries == passportSeries);
+
+                Models.API.Response.ReturnPassenger response = new Models.API.Response.ReturnPassenger
+                {
+                    Id  = passenger.Id,
+                    Name = passenger.Name,
+                    Surname = passenger.Surname,
+                    PassportSeries = passenger.PassportSeries,
+                    Email = passenger.Email
+                };
+
+                return response;
+            }
+        }
+
+        public async Task<IEnumerable<Models.API.Response.ReturnPassenger>> GetPassengerBySurname(string surname)
+        {
+            WorldAirlinesClient db = new WorldAirlinesClient();
+
+            await using (db.context)
+            {
+                var passengers = db.context.Passengers
+                    .ToListAsync()
+                    .Result
+                    .Where(x => x.Surname == surname);
+
+                List<Models.API.Response.ReturnPassenger> response = new List<Models.API.Response.ReturnPassenger>();
+
+                foreach(var passenger in passengers)
+                {
+                    Models.API.Response.ReturnPassenger item = new Models.API.Response.ReturnPassenger
+                    {
+                        Id = passenger.Id,
+                        Name = passenger.Name,
+                        Surname = passenger.Surname,
+                        PassportSeries = passenger.PassportSeries,
+                        Email = passenger.Email
+                    };
+
+                    response.Add(item);
+                }
+
+                return response;
+            }
+        }
+
+        public async Task DeletePassengerByPassportSeries(string passportSeries)
+        {
+            WorldAirlinesClient db = new WorldAirlinesClient();
+
+            await using (db.context)
+            {
+                var passengers = db.context.Passengers
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.PassportSeries == passportSeries);
+
+                db.context.Remove(passengers);
+
+                db.context.SaveChanges();
+            }
+        }
     }
 }
