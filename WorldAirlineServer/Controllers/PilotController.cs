@@ -23,7 +23,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPilot")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator, ")]
         public async Task<IActionResult> GetPilot(string login)
         {
             try
@@ -43,7 +43,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPilotByPersonalInfo")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
         public async Task<IActionResult> GetPilot(string name, string surname)
         {
             try

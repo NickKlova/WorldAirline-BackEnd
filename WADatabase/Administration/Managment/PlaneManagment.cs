@@ -6,27 +6,33 @@ using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PlaneManagment
+    public class PlaneManagment : Interfaces.IPlane
     {
-        public async Task<IEnumerable<Models.API.Response.ReturnPlane>> GetAllPlanes()
+        private WorldAirlinesClient _db;
+        public PlaneManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            _db = dbClient;
+        }
+        public async Task<IEnumerable<ReturnPlane>> GetAllPlanesAsync()
+        {
+            await using (_db)
             {
-                var planes = db.context.Planes
+                var planes = _db.context.Planes
                     .ToListAsync()
                     .Result;
 
+                if (planes == null)
+                    return null;
 
-                List<Models.API.Response.ReturnPlane> response = new List<Models.API.Response.ReturnPlane>();
+                List<ReturnPlane> response = new List<ReturnPlane>();
 
                 foreach (var plane in planes)
                 {
-                    Models.API.Response.ReturnPlane item = new Models.API.Response.ReturnPlane
+                    ReturnPlane item = new ReturnPlane
                     {
                         Id = plane.Id,
                         Number = plane.Number,
@@ -42,19 +48,19 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-
-        public async Task<Models.API.Response.ReturnPlane> GetPlaneById(int id)
+        public async Task<ReturnPlane> GetPlaneAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var plane = db.context.Planes
+                var plane = _db.context.Planes
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
-                Models.API.Response.ReturnPlane item = new Models.API.Response.ReturnPlane
+                if (plane == null)
+                    return null;
+
+                ReturnPlane response = new ReturnPlane
                 {
                     Id = plane.Id,
                     Number = plane.Number,
@@ -64,15 +70,12 @@ namespace WADatabase.Administration.Managment
                     Ok = plane.Ok
                 };
 
-                return item;
+                return response;
             }
         }
-
-        public async Task CreatePlane(ReceivedPlane incomingData)
+        public async Task CreatePlaneAsync(ReceivedPlane incomingData)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
                 Models.DB_Request.Plane plane = new Models.DB_Request.Plane
                 {
@@ -83,24 +86,24 @@ namespace WADatabase.Administration.Managment
                     LifeTime = incomingData.LifeTime
                 };
 
-                db.context.Add(plane);
-                db.context.SaveChanges();
+                _db.context.Add(plane);
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task DeletePlane (int id)
+        public async Task DeletePlaneAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var plane = db.context.Planes
+                var plane = _db.context.Planes
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
-                db.context.Remove(plane);
-                db.context.SaveChanges();
+                if (plane == null)
+                    throw new Exception("Bad data!");
+
+                _db.context.Remove(plane);
+                _db.context.SaveChanges();
             }
         }
     }

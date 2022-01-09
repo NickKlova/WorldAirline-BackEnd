@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,75 +15,87 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class PlaneController : ControllerBase
     {
+        private PlaneManagment _db;
+        public PlaneController(PlaneManagment dbClient)
+        {
+            _db = dbClient;
+        }
         [HttpGet]
         [Route("/getAllPlanes")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetAllPlanes()
         {
             try
             {
-                PlaneManagment db = new PlaneManagment();
-
-                var result = await db.GetAllPlanes();
-
-                return Ok(result);
+                var response = await _db.GetAllPlanesAsync();
+                if (response == null)
+                    return StatusCode(404, "Not found!");
+                else
+                    return StatusCode(200, response);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
-        [Route("/getPlanesById")]
-        public async Task<IActionResult> GetPlanesById(int id)
+        [Route("/getPlane")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        public async Task<IActionResult> GetPlane(int id)
         {
             try
             {
-                PlaneManagment db = new PlaneManagment();
-
-                var result = await db.GetPlaneById(id);
-
-                return Ok(result);
+                var response = await _db.GetPlaneAsync(id);
+                if (response == null)
+                    return StatusCode(404, "Not found!");
+                else
+                    return StatusCode(200, response);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
         [Route("/createPlane")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreatePlane(ReceivedPlane incomingData)
         {
             try
             {
-                PlaneManagment db = new PlaneManagment();
+                await _db.CreatePlaneAsync(incomingData);
 
-                await db.CreatePlane(incomingData);
-
-                return Ok();
+                return StatusCode(201, "Created");
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
         [Route("/deletePlane")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeletePlane(int id)
         {
             try
             {
-                PlaneManagment db = new PlaneManagment();
+                await _db.DeletePlaneAsync(id);
 
-                await db.DeletePlane(id);
-
-                return Ok();
+                return StatusCode(200, "Deleted");
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
     }
