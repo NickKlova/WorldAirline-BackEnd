@@ -6,18 +6,111 @@ using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class AirportManagment
+    public class AirportManagment : Interfaces.IAirport
     {
-        public async Task CreateAirport(ReceivedAirport incomingData)
+        private WorldAirlinesClient _db;
+        public AirportManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            _db = dbClient;
+        }
+        public async Task<ReturnAirport> GetAirportAsync(int id)
+        {
+            await using (_db)
             {
-                var loc = db.context.Locations
+                var airport = _db.context.Airports
+                    .Include(x => x.Location)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == id);
+
+                ReturnAirport response = new ReturnAirport
+                {
+                    Id = airport.Id,
+                    Location = new ReturnLocation
+                    {
+                        Id = airport.Location.Id,
+                        City = airport.Location.City,
+                        Country = airport.Location.Country
+                    }
+                };
+
+                return response;
+            }
+        }
+        public async Task<IEnumerable<ReturnAirport>> GetAirportsAsync(string country)
+        {
+            await using (_db)
+            {
+                var airports = _db.context.Airports
+                    .Include(x => x.Location)
+                    .ToListAsync()
+                    .Result
+                    .Where(x => x.Location.Country == country);
+
+                if (airports == null)
+                    return null;
+
+                List<ReturnAirport> response = new List<ReturnAirport>();
+
+                foreach (var airport in airports)
+                {
+                    ReturnAirport item = new ReturnAirport
+                    {
+                        Id = airport.Id,
+                        Location = new Models.API.Response.ReturnLocation
+                        {
+                            Id = airport.Location.Id,
+                            City = airport.Location.City,
+                            Country = airport.Location.Country
+                        }
+                    };
+
+                    response.Add(item);
+                }
+                return response;
+            }
+        }
+        public async Task<IEnumerable<ReturnAirport>> GetAllAirportsAsync()
+        {
+            await using (_db)
+            {
+                var airports = _db.context.Airports
+                    .Include(x => x.Location)
+                    .ToListAsync()
+                    .Result;
+
+                if (airports == null)
+                    return null;
+
+                List<ReturnAirport> response = new List<ReturnAirport>();
+
+                foreach (var airport in airports)
+                {
+                    ReturnAirport item = new ReturnAirport
+                    {
+                        Id = airport.Id,
+                        Location = new ReturnLocation
+                        {
+                            Id = airport.Location.Id,
+                            City = airport.Location.City,
+                            Country = airport.Location.Country
+                        }
+                    };
+
+                    response.Add(item);
+                }
+                return response;
+            }
+        }
+        public async Task CreateAirportAsync(ReceivedAirport incomingData)
+        {
+            await using (_db)
+            {
+                var loc = _db.context.Locations
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.City == incomingData.Location.City && x.Country == incomingData.Location.Country);
@@ -28,118 +121,24 @@ namespace WADatabase.Administration.Managment
                     LocationId = loc.Id
                 };
 
-                db.context.Add(item);
-                db.context.SaveChanges();
+                _db.context.Add(item);
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task DeleteAirport(int id)
+        public async Task DeleteAirportAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var airport = db.context.Airports
+                var airport = _db.context.Airports
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
-                db.context.Remove(airport);
-                db.context.SaveChanges();
-            }
-        }
+                if (airport == null)
+                    throw new Exception("Bad data!");
 
-        public async Task<IEnumerable<Models.API.Response.ReturnAirport>> GetAirportsByCountry(string country)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var airports = db.context.Airports
-                    .Include(x=>x.Location)
-                    .ToListAsync()
-                    .Result
-                    .Where(x => x.Location.Country == country);
-
-                List<Models.API.Response.ReturnAirport> response = new List<Models.API.Response.ReturnAirport>();
-
-                foreach(var airport in airports)
-                {
-                    Models.API.Response.ReturnAirport item = new Models.API.Response.ReturnAirport
-                    {
-                        Id = airport.Id,
-                        Location = new Models.API.Response.ReturnLocation
-                        {
-                            Id = airport.Location.Id,
-                            City = airport.Location.City,
-                            Country = airport.Location.Country
-                        }
-                    };
-
-                    response.Add(item);
-                }
-                return response;
-            }
-        }
-
-        public async Task<Models.API.Response.ReturnAirport> GetAirport(int id)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var airport = db.context.Airports
-                    .Include(x => x.Location)
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Id == id);
-
-
-                    Models.API.Response.ReturnAirport item = new Models.API.Response.ReturnAirport
-                    {
-                        Id = airport.Id,
-                        Location = new Models.API.Response.ReturnLocation
-                        {
-                            Id = airport.Location.Id,
-                            City = airport.Location.City,
-                            Country = airport.Location.Country
-                        }
-                    };
-
-                
-                return item;
-            }
-        }
-
-        public async Task<IEnumerable<Models.API.Response.ReturnAirport>> GetAllAirports()
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var airports = db.context.Airports
-                    .Include(x => x.Location)
-                    .ToListAsync()
-                    .Result;
-
-                List<Models.API.Response.ReturnAirport> response = new List<Models.API.Response.ReturnAirport>();
-
-                foreach (var airport in airports)
-                {
-                    Models.API.Response.ReturnAirport item = new Models.API.Response.ReturnAirport
-                    {
-                        Id = airport.Id,
-                        Location = new Models.API.Response.ReturnLocation
-                        {
-                            Id = airport.Location.Id,
-                            City = airport.Location.City,
-                            Country = airport.Location.Country
-                        }
-                    };
-
-                    response.Add(item);
-                }
-                return response;
+                _db.context.Remove(airport);
+                _db.context.SaveChanges();
             }
         }
     }

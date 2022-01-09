@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,75 +15,93 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class CrewController : ControllerBase
     {
+        private CrewManagment _db;
+        public CrewController(CrewManagment dbClient)
+        {
+            _db = dbClient;
+        }
+
         [HttpGet]
-        [Route("/getCrewByTicketScheme")]
+        [Route("/getCrew")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetCrewByTicketId(int ticketId)
         {
             try
             {
-                CrewManagment db = new CrewManagment();
+                var response = await _db.GetCrewByTicketSchemeAsync(ticketId);
 
-                var result = await db.GetCrewByTicketScheme(ticketId);
-
-                return Ok(result);
+                if (response == null)
+                    return StatusCode(404, "Not found!");
+                else
+                    return StatusCode(200, response);
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(400);
             }
         }
 
         [HttpPost]
         [Route("/addPilotToTheCrew")]
-        public async Task<IActionResult> AddPilot(int pilotId, int ticketId, int positionId)
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> AddPilot(string pilotLogin, int ticketId, string position)
         {
             try
             {
-                CrewManagment db = new CrewManagment();
+                await _db.AddPilotToCrewAsync(pilotLogin, ticketId, position);
 
-                await db.AddPilotToCrew(pilotId, ticketId, positionId);
-
-                return Ok();
+                return StatusCode(200);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500);
             }
         }
 
         [HttpDelete]
-        [Route("/deletePilotFromCrew")]
-        public async Task<IActionResult> DeletePilotFromCrew(string login)
+        [Route("/deletePilotFromTheCrew")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> DeletePilotFromTheCrew(string login)
         {
             try
             {
-                CrewManagment db = new CrewManagment();
+                await _db.DeletePilotFromCrewAsync(login);
 
-                await db.DeletePilotFromCrew(login);
-
-                return Ok();
+                return StatusCode(200);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500);
             }
         }
 
         [HttpDelete]
         [Route("/deleteCrew")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CrewDelete(int ticketId)
         {
             try
             {
-                CrewManagment db = new CrewManagment();
+                await _db.DeleteCrewAsync(ticketId);
 
-                await db.GetCrewByTicketScheme(ticketId);
-
-                return Ok();
+                return StatusCode(200);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500);
             }
         }
     }

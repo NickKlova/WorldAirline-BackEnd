@@ -142,7 +142,7 @@ namespace WorldAirlineServer.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 

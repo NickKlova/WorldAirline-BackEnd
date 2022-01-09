@@ -5,37 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class CrewManagment
+    public class CrewManagment : Interfaces.ICrew
     {
-        public async Task AddPilotToCrew(int pilotId, int schemeId, int positionId)
+        private WorldAirlinesClient _db;
+        public CrewManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                Models.DB_Request.Crew crew = new Models.DB_Request.Crew
-                {
-                    PilotId = pilotId,
-                    CrewPositionId = positionId,
-                    TicketSchemeId = schemeId
-                };
-
-                db.context.Add(crew);
-            }
+            _db = dbClient;
         }
-
-        public async Task<IEnumerable<Models.API.Response.ReturnPilotCrew>> GetCrewByTicketScheme(int ticketId)
+        public async Task<IEnumerable<ReturnPilotCrew>> GetCrewByTicketSchemeAsync(int ticketId)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                List<Models.API.Response.ReturnPilotCrew> response = new List<Models.API.Response.ReturnPilotCrew>();
+                List<ReturnPilotCrew> response = new List<ReturnPilotCrew>();
 
-                var pilots = db.context.Crews
+                var pilots = _db.context.Crews
                     .Include(x => x.CrewPosition)
                     .Include(x => x.Pilot)
                     .Include(x => x.Pilot.Account)
@@ -44,15 +31,18 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .Where(x => x.TicketSchemeId == ticketId);
 
+                if (pilots == null)
+                    return null;
+
                 foreach (var pilot in pilots)
                 {
-                    Models.API.Response.ReturnPilotCrew item = new Models.API.Response.ReturnPilotCrew
+                    ReturnPilotCrew item = new ReturnPilotCrew
                     {
-                        pilot = new Models.API.Response.ReturnPilot
+                        pilot = new ReturnPilot
                         {
                             Id = pilot.Pilot.Id,
                             FlyingHours = pilot.Pilot.FlyingHours,
-                            Account = new Models.API.Response.ReturnAccount
+                            Account = new ReturnAccount
                             {
                                 Id = pilot.Pilot.Account.Id,
                                 Name = pilot.Pilot.Account.Name,
@@ -61,14 +51,14 @@ namespace WADatabase.Administration.Managment
                                 Phone = pilot.Pilot.Account.Phone,
                                 Email = pilot.Pilot.Account.Email,
                                 Balance = pilot.Pilot.Account.Balance,
-                                Role = new Models.API.Response.ReturnRole
+                                Role = new ReturnRole
                                 {
                                     Id = pilot.Pilot.Account.Role.Id,
                                     Role = pilot.Pilot.Account.Role.Role1
                                 }
                             }
                         },
-                        position = new Models.API.Response.ReturnPosition
+                        position = new ReturnPosition
                         {
                             Id = pilot.CrewPosition.Id,
                             position = pilot.CrewPosition.PositionName
@@ -81,43 +71,71 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-        public async Task DeletePilotFromCrew(string login)
+        public async Task AddPilotToCrewAsync(string login, int schemeId, string pos)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var pilot = db.context.Crews
+                var pilot = _db.context.Pilots
+                    .Include(x => x.Account)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Account.Login == login);
+
+                var position = _db.context.Positions
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.PositionName == pos);
+
+                if (pilot == null || position == null)
+                    throw new Exception("Bad data!");
+
+                Models.DB_Request.Crew crew = new Models.DB_Request.Crew
+                {
+                    PilotId = pilot.Id,
+                    CrewPositionId = position.Id,
+                    TicketSchemeId = schemeId
+                };
+
+                _db.context.Add(crew);
+            }
+        }
+        public async Task DeletePilotFromCrewAsync(string login)
+        {
+            await using (_db)
+            {
+                var pilot = _db.context.Crews
                     .Include(x => x.Pilot)
                     .Include(x => x.Pilot.Account)
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Pilot.Account.Login == login);
 
-                db.context.Remove(pilot);
-                db.context.SaveChanges();
+                if (pilot == null)
+                    throw new Exception("Bad data!");
+
+                _db.context.Remove(pilot);
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task DeleteCrew(int ticketId)
+        public async Task DeleteCrewAsync(int ticketId)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var crew = db.context.Crews
+                var crew = _db.context.Crews
                     .ToListAsync()
                     .Result
                     .Where(x => x.TicketSchemeId == ticketId);
 
-                foreach(var pilot in crew)
+                if (crew == null)
+                    throw new Exception("Bad data!");
+
+                foreach (var pilot in crew)
                 {
-                    db.context.Remove(pilot);
+                    _db.context.Remove(pilot);
                 }
 
-                db.context.SaveChanges();
+                _db.context.SaveChanges();
             }
-
         }
     }
 }

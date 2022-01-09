@@ -59,9 +59,12 @@ namespace WorldAirlineServer
             var client = new AmazonDynamoDBClient(credentials, config);
             services.AddSingleton<IAmazonDynamoDB>(client);
             services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
+
             services.AddSingleton<AuthManagment>();
             services.AddSingleton<AccountManagment>();
             services.AddSingleton<WorldAirlinesClient>();
+            services.AddSingleton<AirportManagment>();
+            services.AddSingleton<CrewManagment>();
 
             services.AddAuthentication(options =>
             {
