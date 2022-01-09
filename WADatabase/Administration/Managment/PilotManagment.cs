@@ -6,28 +6,35 @@ using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PilotManagment
+    public class PilotManagment : Interfaces.IPilot
     {
-        public async Task<Models.API.Response.ReturnPilot> GetPilotByLogin(string login)
+        private WorldAirlinesClient _db;
+        public PilotManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            _db = dbClient;
+        }
+        public async Task<ReturnPilot> GetPilotAsync(string login)
+        {
+            await using (_db)
             {
-                var pilots = db.context.Pilots
+                var pilots = _db.context.Pilots
                     .Include(x => x.Account)
-                    .Include(x=>x.Account.Role)
+                    .Include(x => x.Account.Role)
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Account.Login == login);
 
-                Models.API.Response.ReturnPilot response = new Models.API.Response.ReturnPilot
+                if (pilots == null)
+                    return null;
+
+                ReturnPilot response = new ReturnPilot
                 {
                     Id = pilots.Id,
-                    Account = new Models.API.Response.ReturnAccount
+                    Account = new ReturnAccount
                     {
                         Id = pilots.Account.Id,
                         Name = pilots.Account.Name,
@@ -36,7 +43,7 @@ namespace WADatabase.Administration.Managment
                         Phone = pilots.Account.Phone,
                         Balance = pilots.Account.Balance,
                         Login = pilots.Account.Login,
-                        Role = new Models.API.Response.ReturnRole
+                        Role = new ReturnRole
                         {
                             Id = pilots.Account.Role.Id,
                             Role = pilots.Account.Role.Role1
@@ -47,28 +54,28 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-
-        public async Task<IEnumerable<Models.API.Response.ReturnPilot>> GetPilotByCredentials(string name, string surname)
+        public async Task<IEnumerable<ReturnPilot>> GetPilotByPersonalInfo(string name, string surname)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var pilots = db.context.Pilots
+                var pilots = _db.context.Pilots
                     .Include(x => x.Account)
                     .Include(x => x.Account.Role)
                     .ToListAsync()
                     .Result
                     .Where(x => x.Account.Name == name && x.Account.Surname == surname);
 
-                List<Models.API.Response.ReturnPilot> response = new List<Models.API.Response.ReturnPilot>();
+                if (pilots == null)
+                    return null;
 
-                foreach(var pilot in pilots)
+                List<ReturnPilot> response = new List<ReturnPilot>();
+
+                foreach (var pilot in pilots)
                 {
-                    Models.API.Response.ReturnPilot item = new Models.API.Response.ReturnPilot
+                    ReturnPilot item = new ReturnPilot
                     {
                         Id = pilot.Id,
-                        Account = new Models.API.Response.ReturnAccount
+                        Account = new ReturnAccount
                         {
                             Id = pilot.Account.Id,
                             Name = pilot.Account.Name,
@@ -77,7 +84,7 @@ namespace WADatabase.Administration.Managment
                             Phone = pilot.Account.Phone,
                             Balance = pilot.Account.Balance,
                             Login = pilot.Account.Login,
-                            Role = new Models.API.Response.ReturnRole
+                            Role = new ReturnRole
                             {
                                 Id = pilot.Account.Role.Id,
                                 Role = pilot.Account.Role.Role1
@@ -90,56 +97,69 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-    
-        public async Task CreatePilot(ReceivedPilot incomingData)
+        public async Task CreatePilotAsync(ReceivedPilot incomingData)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
+                var account = _db.context.Accounts
+                    .Include(x => x.Role)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x=>x.Login == incomingData.Login);
+
+                var role = _db.context.Roles
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Role1 == "pilot");
+
+                if (account == null)
+                    throw new Exception("Bad data!");
+
+
                 Models.DB_Request.Pilot pilot = new Models.DB_Request.Pilot
                 {
                     FlyingHours = incomingData.FlyingHours,
-                    AccountId = incomingData.AccountId
+                    AccountId = account.Id
                 };
 
-                db.context.Add(pilot);
-                db.context.SaveChanges();
+                account.RoleId = role.Id;
+
+                _db.context.Add(pilot);
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task UpdateFlyingHours(int amount, string login)
+        public async Task UpdateFlyingHoursAsync(int amount, string login)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var pilot = db.context.Pilots
+                var pilot = _db.context.Pilots
                                     .Include(x => x.Account)
                                     .ToListAsync()
                                     .Result
                                     .FirstOrDefault(x => x.Account.Login == login);
 
+                if (pilot == null)
+                    throw new Exception("Bad data!");
+
                 pilot.FlyingHours += amount;
-                db.context.Update(pilot);
-                db.context.SaveChanges();
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task DeletePilotByLogin(string login)
+        public async Task DeletePilotAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var pilot = db.context.Pilots
+                var pilot = _db.context.Pilots
                     .Include(x => x.Account)
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.Account.Login == login);
+                    .FirstOrDefault(x => x.Id == id);
 
-                db.context.Remove(pilot);
-                db.context.SaveChanges();
+                if (pilot == null)
+                    throw new Exception("Bad data!");
+
+                _db.context.Remove(pilot);
+                _db.context.SaveChanges();
             }
         }
     }

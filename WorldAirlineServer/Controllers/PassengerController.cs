@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,75 +15,89 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class PassengerController : ControllerBase
     {
+        private PassengerManagment _db;
+        public PassengerController(PassengerManagment dbClient)
+        {
+            _db = dbClient;
+        }
         [HttpGet]
-        [Route("/getPassengerByPassportSeries")]
-        public async Task<IActionResult> GetPassengerByPassportSeries(string passportSeries)
+        [Route("/getPassenger")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> GetPassengerByPassportSeries(int id)
         {
             try
             {
-                PassengerManagment db = new PassengerManagment();
+                var response = await _db.GetPassengerAsync(id);
 
-                var result = await db.GetPassengerByPassportSeriesAsync(passportSeries);
-
-                return Ok(result);
+                if (response != null)
+                    return StatusCode(404, "Not found!");
+                else
+                    return StatusCode(200, response);
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(500);
             }
         }
 
         [HttpGet]
-        [Route("/getPassengerBySurname")]
+        [Route("/getPassengersBySurname")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetPassengerBySurname(string surname)
         {
             try
             {
-                PassengerManagment db = new PassengerManagment();
+                var response = await _db.GetPassengersBySurnameAsync(surname);
 
-                var result = await db.GetPassengerBySurname(surname);
-
-                return Ok(result);
+                if (response != null)
+                    return StatusCode(404, "Not found!");
+                else
+                    return StatusCode(200, response);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
         [Route("/createPassenger")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator, user")]
         public async Task<IActionResult> CreatePassenger(ReceivedPassenger incomingData)
         {
             try
             {
-                PassengerManagment db = new PassengerManagment();
+                await _db.CreatePassengerAsync(incomingData);
 
-                await db.CreatePassengerAsync(incomingData);
-
-                return Ok();
+                return StatusCode(201, "Created");
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest();
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deletePassengerByPassportSeries")]
-        public async Task<IActionResult> DeletePassenger(string passportSeries)
+        [Route("/deletePassenger")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> DeletePassenger(int id)
         {
             try
             {
-                PassengerManagment db = new PassengerManagment();
+                await _db.DeletePassengerAsync(id);
 
-                await db.DeletePassengerByPassportSeries(passportSeries);
-
-                return Ok();
+                return StatusCode(200, "Deleted");
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500);
             }
         }
     }

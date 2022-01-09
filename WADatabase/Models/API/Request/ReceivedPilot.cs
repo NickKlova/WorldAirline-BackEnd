@@ -9,6 +9,6 @@ namespace WADatabase.Models.API.Request
     public class ReceivedPilot
     {
         public int FlyingHours { get; set; }
-        public int AccountId { get; set; }
+        public string Login { get; set; }
     }
 }

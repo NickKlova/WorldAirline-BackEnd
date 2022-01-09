@@ -6,73 +6,34 @@ using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PassengerManagment
+    public class PassengerManagment : Interfaces.IPassenger
     {
-        public async Task CreatePassengerAsync(ReceivedPassenger incomingData)
+        private WorldAirlinesClient _db;
+        public PassengerManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            Models.DB_Request.Passenger passenger = new Models.DB_Request.Passenger
-            {
-                Name = incomingData.Name,
-                Surname = incomingData.Surname,
-                Email = incomingData.Email,
-                PassportSeries = incomingData.PassportSeries
-            };
-
-            await using (db.context)
-            {
-                var result = db.context.Add(passenger);
-
-                if (result.State != EntityState.Added)
-                    throw new Exception("Bad request");
-
-                db.context.SaveChanges();
-            }
+            _db = dbClient;
         }
-        public async Task<Models.API.Response.ReturnPassenger> GetPassengerByPassportSeriesAsync(string passportSeries)
+        public async Task<IEnumerable<ReturnPassenger>> GetPassengersBySurnameAsync(string surname)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-            
-            await using (db.context)
+            await using (_db)
             {
-                var passenger = db.context.Passengers
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.PassportSeries == passportSeries);
-
-                Models.API.Response.ReturnPassenger response = new Models.API.Response.ReturnPassenger
-                {
-                    Id  = passenger.Id,
-                    Name = passenger.Name,
-                    Surname = passenger.Surname,
-                    PassportSeries = passenger.PassportSeries,
-                    Email = passenger.Email
-                };
-
-                return response;
-            }
-        }
-
-        public async Task<IEnumerable<Models.API.Response.ReturnPassenger>> GetPassengerBySurname(string surname)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var passengers = db.context.Passengers
+                var passengers = _db.context.Passengers
                     .ToListAsync()
                     .Result
                     .Where(x => x.Surname == surname);
 
-                List<Models.API.Response.ReturnPassenger> response = new List<Models.API.Response.ReturnPassenger>();
+                if (passengers == null)
+                    return null;
 
-                foreach(var passenger in passengers)
+                List<ReturnPassenger> response = new List<ReturnPassenger>();
+
+                foreach (var passenger in passengers)
                 {
-                    Models.API.Response.ReturnPassenger item = new Models.API.Response.ReturnPassenger
+                    ReturnPassenger item = new ReturnPassenger
                     {
                         Id = passenger.Id,
                         Name = passenger.Name,
@@ -88,20 +49,65 @@ namespace WADatabase.Administration.Managment
             }
         }
 
-        public async Task DeletePassengerByPassportSeries(string passportSeries)
+        public async Task<ReturnPassenger> GetPassengerAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var passengers = db.context.Passengers
+                var passenger = _db.context.Passengers
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.PassportSeries == passportSeries);
+                    .FirstOrDefault(x => x.Id == id);
 
-                db.context.Remove(passengers);
+                if (passenger == null)
+                    return null;
 
-                db.context.SaveChanges();
+                ReturnPassenger response = new ReturnPassenger
+                {
+                    Id = passenger.Id,
+                    Name = passenger.Name,
+                    Surname = passenger.Surname,
+                    PassportSeries = passenger.PassportSeries,
+                    Email = passenger.Email
+                };
+
+                return response;
+            }
+        }
+
+        public async Task CreatePassengerAsync(ReceivedPassenger incomingData)
+        {
+            if (!Settings.Validation.IsMailValid(incomingData.Email))
+                throw new Exception("Wrong mail!");
+
+            await using (_db)
+            {
+                Models.DB_Request.Passenger passenger = new Models.DB_Request.Passenger
+                {
+                    Name = incomingData.Name,
+                    Surname = incomingData.Surname,
+                    Email = incomingData.Email,
+                    PassportSeries = incomingData.PassportSeries
+                };
+
+                _db.context.Add(passenger);
+                _db.context.SaveChanges();
+            }
+        }
+
+        public async Task DeletePassengerAsync(int id)
+        {
+            await using (_db)
+            {
+                var passenger = _db.context.Passengers
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == id);
+
+                if (passenger == null)
+                    throw new Exception("Bad data!");
+
+                _db.context.Remove(passenger);
+                _db.context.SaveChanges();
             }
         }
     }

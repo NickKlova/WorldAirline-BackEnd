@@ -65,6 +65,8 @@ namespace WorldAirlineServer
             services.AddSingleton<WorldAirlinesClient>();
             services.AddSingleton<AirportManagment>();
             services.AddSingleton<CrewManagment>();
+            services.AddSingleton<PassengerManagment>();
+            services.AddSingleton<PilotManagment>();
 
             services.AddAuthentication(options =>
             {
