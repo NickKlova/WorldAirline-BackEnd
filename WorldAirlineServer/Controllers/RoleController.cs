@@ -12,23 +12,26 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
+        private RoleManagment _db;
+        public RoleController(RoleManagment dbClient)
+        {
+            _db = dbClient;
+        }
         [HttpGet]
-        [Route("/getRoles")]
+        [Route("/getAllRoles")]
         public async Task<IActionResult> GetRoles()
         {
             try
             {
-                RoleManagment role = new RoleManagment();
-                var response = await role.GetAllAsync();
-
-                return StatusCode(200, response);
+                var response = await _db.GetAllRolesAsync();
+                if (response == null)
+                    return StatusCode(404, "Not found");
+                else
+                    return StatusCode(200, response);
             }
             catch (Exception e)
             {
-                if (e.Message == "Not found")
-                    return StatusCode(404, "Not found");
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(500, e.Message);
             }
         }
     }

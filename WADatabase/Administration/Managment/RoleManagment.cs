@@ -5,37 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class RoleManagment
+    public class RoleManagment : Interfaces.IRole
     {
-        public async Task<IEnumerable<Models.API.Response.ReturnRole>> GetAllAsync()
+        private WorldAirlinesClient _db;
+        public RoleManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            List<Models.API.Response.ReturnRole> response = new List<Models.API.Response.ReturnRole>();
-
-            await using (db.context)
+            _db = dbClient;
+        }
+        public async Task<IEnumerable<ReturnRole>> GetAllRolesAsync()
+        {
+            await using (_db)
             {
-                var role = db.context.Roles
+                var roles = _db.context.Roles
                     .ToListAsync()
                     .Result;
 
-                if (role == null)
-                    throw new Exception("Not found");
-                else
-                {
-                    for (int i = 0; i < role.Count; i++)
-                    {
-                        Models.API.Response.ReturnRole item = new Models.API.Response.ReturnRole
-                        {
-                            Id = role[i].Id,
-                            Role = role[i].Role1
-                        };
+                if (roles == null)
+                    return null;
 
-                        response.Add(item);
-                    }
+                List<ReturnRole> response = new List<ReturnRole>();
+
+                foreach (var role in roles)
+                {
+                    ReturnRole item = new ReturnRole
+                    {
+                        Id = role.Id,
+                        Role = role.Role1
+                    };
+
+                    response.Add(item);
                 }
 
                 return response;
