@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WADatabase.Administration.Clients;
+using WADatabase.Administration.Managment;
 
 namespace WorldAirlineServer
 {
@@ -58,6 +60,8 @@ namespace WorldAirlineServer
             services.AddSingleton<IAmazonDynamoDB>(client);
             services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
             services.AddSingleton<AuthManagment>();
+            services.AddSingleton<AccountManagment>();
+            services.AddSingleton<WorldAirlinesClient>();
 
             services.AddAuthentication(options =>
             {

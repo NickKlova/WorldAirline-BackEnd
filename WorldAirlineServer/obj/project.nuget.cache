@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "twIIGvpJC5HYSiXnv+GkUPM0iwPHRKh0bGGCblSqin3Cq7vFjnRlW8OXn5Yh+XZF1J0WU+lM7ZHvpsmtjAUDzg==",
+  "dgSpecHash": "sFeuXpJ/x6BWVadlvCq+JTiWGXIwiClCW/P7Xitmn46WyzPJRGYTiJ8gjvpto5ddsy8+KC31gqrL3R8ys6LZlw==",
   "success": true,
   "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.core\\3.7.5.9\\awssdk.core.3.7.5.9.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.2.5\\awssdk.dynamodbv2.3.7.2.5.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\libphonenumber-csharp\\8.12.38\\libphonenumber-csharp.8.12.38.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.13\\microsoft.aspnetcore.authentication.jwtbearer.5.0.13.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

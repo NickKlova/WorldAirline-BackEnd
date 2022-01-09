@@ -3,97 +3,134 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
+using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class AccountManagment
+    public class AccountManagment : Interfaces.IAccount
     {
-        public async Task RegistrationAsync(Models.API.Request.ReceivedAccount incomingData)
+        private WorldAirlinesClient _db;
+        public AccountManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            Models.DB_Request.Account account = new Models.DB_Request.Account
-            {
-                Name = incomingData.Name,
-                Surname = incomingData.Surname,
-                Email = incomingData.Email,
-                Phone = incomingData.Phone,
-                Balance = 0,
-                Login = incomingData.Login,
-                Password = incomingData.Password,
-                RoleId = 3
-            };
-
-            await using (db.context)
-            {
-                var result = db.context.Add(account);
-
-                if (result.State != EntityState.Added)
-                    throw new Exception("Bad request");
-
-                db.context.SaveChanges();
-            }
+            _db = dbClient;
         }
-
-        public async Task ChangeBalanceAsync(decimal amount, string login)
+        public async Task<ReturnAccount> GetAccountAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
+            ReturnAccount response;
 
-            await using (db.context)
+            await using (_db)
             {
-                var account = db.context.Accounts
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Login == login);
-
-                account.Balance += amount;
-
-                db.context.SaveChanges();
-            }
-        }
-
-        public async Task<Models.API.Response.ReturnAccount> GetByIdAsync(int id)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            Models.API.Response.ReturnAccount response;
-
-            await using (db.context)
-            {
-                var account = db.context.Accounts
+                var account = _db.context.Accounts
+                    .Include(x=>x.Role)
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
-                var role = db.context.Roles
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
+                ReturnRole role;
 
-                if (role != null)
+                if (account.RoleId != null)
                 {
-                    response = new Models.API.Response.ReturnAccount
+                    role = new ReturnRole
                     {
-                        Id = account.Id,
-                        Name = account.Name,
-                        Surname = account.Surname,
-                        Email = account.Email,
-                        Phone = account.Phone,
-                        Balance = account.Balance,
-                        Login = account.Login,
-                        Role = new Models.API.Response.ReturnRole
-                        {
-                            Id = role.Id,
-                            Role = role.Role1
-                        }
+                        Id = account.Role.Id,
+                        Role = account.Role.Role1
                     };
                 }
                 else
                 {
-                    response = new Models.API.Response.ReturnAccount
+                    role = null;
+                }
+
+                response = new ReturnAccount
+                {
+                    Id = account.Id,
+                    Name = account.Name,
+                    Surname = account.Surname,
+                    Email = account.Email,
+                    Phone = account.Phone,
+                    Balance = account.Balance,
+                    Login = account.Login,
+                    Role = role
+                };
+            }
+
+            return response;
+        }
+        public async Task<ReturnAccount> GetAccountAsync(string login)
+        {
+            ReturnAccount response;
+
+            await using (_db)
+            {
+                var account = _db.context.Accounts
+                    .Include(x=>x.Role)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Login == login);
+
+                ReturnRole role;
+
+                if (account.RoleId != null)
+                {
+                    role = new ReturnRole
+                    {
+                        Id = account.Role.Id,
+                        Role = account.Role.Role1
+                    };
+                }
+                else
+                {
+                    role = null;
+                }
+
+                response = new ReturnAccount
+                {
+                    Id = account.Id,
+                    Name = account.Name,
+                    Surname = account.Surname,
+                    Email = account.Email,
+                    Phone = account.Phone,
+                    Balance = account.Balance,
+                    Login = account.Login,
+                    Role = role
+                };
+            }
+
+            return response;
+        }
+        public async Task<IEnumerable<ReturnAccount>> GetAccountsByPersonalInfo(string name, string surname)
+        {
+            var response = new List<ReturnAccount>();
+
+            await using (_db)
+            {
+                var accounts = _db.context.Accounts
+                    .Include(x => x.Role)
+                    .ToListAsync()
+                    .Result
+                    .Where(x => x.Name == name && x.Surname == surname);
+
+                foreach(var account in accounts)
+                {
+                    ReturnRole role; 
+
+                    if (account.RoleId != null)
+                    {
+                        role = new ReturnRole
+                        {
+                            Id = account.Role.Id,
+                            Role = account.Role.Role1
+                        };
+                    }
+                    else
+                    {
+                        role = null;
+                    }
+
+                    ReturnAccount item = new ReturnAccount
                     {
                         Id = account.Id,
                         Name = account.Name,
@@ -102,166 +139,133 @@ namespace WADatabase.Administration.Managment
                         Phone = account.Phone,
                         Balance = account.Balance,
                         Login = account.Login,
-                        Role = null
+                        Role = role
                     };
+
+                    response.Add(item);
                 }
             }
 
             return response;
         }
-
-        public async Task<Models.API.Response.ReturnAccount> GetByLoginAsync(string login)
+        public async Task RegisterAccountAsync(ReceivedAccount model)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
+            if (!Settings.Validation.IsMailValid(model.Email))
+                throw new Exception("Wrong mail!");
 
-            Models.API.Response.ReturnAccount response;
+            if (Settings.Validation.PhoneValidation(model.Phone) == null)
+                throw new Exception("Wrong phone number!");
 
-            await using (db.context)
+            await using (_db)
             {
-                var account = db.context.Accounts
+                var role = _db.context.Roles
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.Login == login);
+                    .FirstOrDefault(x => x.Role1 == "user");
 
-                var role = db.context.Roles
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
-
-                if (role != null)
+                Models.DB_Request.Account account = new Models.DB_Request.Account
                 {
-                    response = new Models.API.Response.ReturnAccount
-                    {
-                        Id = account.Id,
-                        Name = account.Name,
-                        Surname = account.Surname,
-                        Email = account.Email,
-                        Phone = account.Phone,
-                        Balance = account.Balance,
-                        Login = account.Login,
-                        Role = new Models.API.Response.ReturnRole
-                        {
-                            Id = role.Id,
-                            Role = role.Role1
-                        }
-                    };
-                }
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    Email = model.Email,
+                    Phone = Settings.Validation.PhoneValidation(model.Phone),
+                    Balance = 0,
+                    Login = model.Login,
+                    Password = model.Password,
+                    RoleId = role.Id
+                };
+
+                _db.context.Add(account);
+                _db.context.SaveChanges();
+            }
+        }
+        public async Task ChangeAccountLoginAsync(string oldLogin, string newLogin, string password)
+        {
+            await using (_db)
+            {
+                var account = _db.context.Accounts
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Login == oldLogin && x.Password == password);
+                if (account == null)
+                    throw new Exception("Bad data!");
                 else
                 {
-                    response = new Models.API.Response.ReturnAccount
-                    {
-                        Id = account.Id,
-                        Name = account.Name,
-                        Surname = account.Surname,
-                        Email = account.Email,
-                        Phone = account.Phone,
-                        Balance = account.Balance,
-                        Login = account.Login,
-                        Role = null
-                    };
+                    account.Login = newLogin;
+                    var result = _db.context.SaveChanges();
                 }
             }
-
-            return response;
         }
-
-        public async Task ChangeLoginAsync(string oldLogin, string newLogin)
+        public async Task ChangeAccountPasswordAsync(string login, string oldPassword, string newPassword)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var account = db.context.Accounts
+                var account = _db.context.Accounts
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.Login == oldLogin);
+                    .FirstOrDefault(x => x.Login == login && x.Password == oldPassword);
 
-                account.Login = newLogin;
-                db.context.SaveChanges();
-            }
-        }
-
-        public async Task ChangePasswordAsync(string login, string password)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var account = db.context.Accounts
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Login == login);
-
-                account.Password = password;
-                db.context.SaveChanges();
-            }
-        }
-
-        public async Task DeleteByLoginAsync(string login)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var account = db.context.Accounts
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Login == login);
-
-                var result = db.context.Remove(account);
-                db.context.SaveChanges();
-
-                if (result.State != EntityState.Detached)
-                    throw new Exception("Bad request");
-            }
-        }
-
-        public async Task GiveRole(string incRole, string login)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var account = db.context.Accounts
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Login == login);
-
-                int? role = db.context.Roles
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Role1 == incRole).Id;
-
-                if (role == null)
-                    throw new Exception("Not found");
+                if (account == null)
+                    throw new Exception("Bad data!");
                 else
-                    account.RoleId = role;
-                db.context.SaveChanges();
+                {
+                    account.Password = newPassword;
+                    _db.context.SaveChanges();
+                }
             }
         }
+        public async Task ChangeAccountBalanceAsync(decimal amount, string login)
+        {
+            await using (_db)
+            {
+                var account = _db.context.Accounts
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Login == login);
 
+                if (account == null)
+                    throw new Exception("Bad data!");
+                else
+                {
+                    account.Balance += amount;
+                    _db.context.SaveChanges();
+                }
+            }
+        }
+        public async Task DeleteAccountAsync(string login)
+        {
+            await using (_db)
+            {
+                var account = _db.context.Accounts
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Login == login);
+
+                if (account == null)
+                    throw new Exception("Bad data!");
+                else
+                {
+                    _db.context.Remove(account);
+                    _db.context.SaveChanges();
+                }
+            }
+        }
         public async Task<ClaimsIdentity> GetIdentity(string login, string password)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var account = db.context.Accounts
+                var account = _db.context.Accounts
+                   .Include(x=>x.Role)
                    .ToListAsync()
                    .Result
                    .FirstOrDefault(x => x.Login == login && x.Password == password);
-
-                var role = db.context.Roles
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x => x.Id == Convert.ToInt32(account.RoleId));
 
                 if (account != null)
                 {
                     var claims = new List<Claim>
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, account.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Role1)
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, account.Role.Role1)
                 };
                     ClaimsIdentity claimsIdentity =
                     new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "0A7PPtkX/C0+KbaksXZFGZb5JXz4vsxc2q49Td5Q7AOcHlKa6GAp/I3jQVzSTXnOTgJ7d3P846F/TGPmozuFOA==",
+  "dgSpecHash": "k79V7Iqde64JHEtHn3w2MuC5THdnEK4tIegLZBWpkVifSHQaVET1rpP4L96rJ622jHs3FJb7r5YsW+RmsKkAOA==",
   "success": true,
   "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\libphonenumber-csharp\\8.12.38\\libphonenumber-csharp.8.12.38.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.0.1\\microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WADatabase.Administration.Clients
 {
-    public class WorldAirlinesClient
+    public class WorldAirlinesClient : IAsyncDisposable
     {
         private ConfigurationBuilder _builder { get; set; }
         private string _configPath = "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\Settings\\";
@@ -33,6 +33,15 @@ namespace WADatabase.Administration.Clients
             _options = _optionsBuilder.UseSqlServer(_connectionString).Options;
 
             context = new WorldAirlinesContext(_options);
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            ValueTask response = context.DisposeAsync();
+
+            context = new WorldAirlinesContext(_options);
+
+            return response;
         }
     }
 }

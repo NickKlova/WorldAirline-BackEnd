@@ -25,41 +25,41 @@ namespace WorldAirlineServer.Controllers
             _dynamoDbClient = dynamoDbClient;
         }
 
-        [HttpPost]
-        [Route("/getToken")]
-        public async Task<IActionResult> Token(string login, string password)
-        {
-            AccountManagment account = new AccountManagment();
+        //[HttpPost]
+        //[Route("/getToken")]
+        //public async Task<IActionResult> Token(string login, string password)
+        //{
+        //    AccountManagment account = new AccountManagment();
 
-            var identity = await account.GetIdentity(login, password);
-            if (identity == null)
-            {
-                return BadRequest("Invalid username or password.");
-            }
-            else
-            {
-                var refreshToken = TokenSetUp.GenerateRefreshToken();
+        //    var identity = await account.GetIdentity(login, password);
+        //    if (identity == null)
+        //    {
+        //        return BadRequest("Invalid username or password.");
+        //    }
+        //    else
+        //    {
+        //        var refreshToken = TokenSetUp.GenerateRefreshToken();
 
-                RefreshToken data = new RefreshToken
-                {
-                    login = login,
-                    refreshToken = refreshToken
-                };
+        //        RefreshToken data = new RefreshToken
+        //        {
+        //            login = login,
+        //            refreshToken = refreshToken
+        //        };
 
-                await _dynamoDbClient.CreateRecord(data);
+        //        await _dynamoDbClient.CreateRecord(data);
 
-                var jwt = TokenSetUp.GenerateToken(identity.Claims);
+        //        var jwt = TokenSetUp.GenerateToken(identity.Claims);
 
-                var response = new
-                {
-                    access_token = jwt,
-                    refresh_token = refreshToken,
-                    username = identity.Name
-                };
+        //        var response = new
+        //        {
+        //            access_token = jwt,
+        //            refresh_token = refreshToken,
+        //            username = identity.Name
+        //        };
 
-                return Ok(response);
-            }
-        }
+        //        return Ok(response);
+        //    }
+        //}
 
         [HttpPost]
         [Route("/refreshToken")]

@@ -32,6 +32,18 @@
           "lib/netstandard2.0/Humanizer.dll": {}
         }
       },
+      "libphonenumber-csharp/8.12.38": {
+        "type": "package",
+        "dependencies": {
+          "System.Collections.Immutable": "1.7.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/PhoneNumbers.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/PhoneNumbers.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/5.0.13": {
         "type": "package",
         "dependencies": {
@@ -1627,7 +1639,8 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.13",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.1",
+          "libphonenumber-csharp": "8.12.38"
         },
         "compile": {
           "bin/placeholder/WADatabase.dll": {}
@@ -1705,6 +1718,29 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "libphonenumber-csharp/8.12.38": {
+      "sha512": "PjUPJXQeYHYnefRZZvkhAR4WUSmNX1rXecAsOfW80zCy0QY47wcW6GeLmIOgJAEQhVPMeoaQSoyKdt3FxQANAw==",
+      "type": "package",
+      "path": "libphonenumber-csharp/8.12.38",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/PhoneNumbers.dll",
+        "lib/net35/PhoneNumbers.xml",
+        "lib/net40/PhoneNumbers.dll",
+        "lib/net40/PhoneNumbers.xml",
+        "lib/net46/PhoneNumbers.dll",
+        "lib/net46/PhoneNumbers.xml",
+        "lib/netstandard1.3/PhoneNumbers.dll",
+        "lib/netstandard1.3/PhoneNumbers.xml",
+        "lib/netstandard2.0/PhoneNumbers.dll",
+        "lib/netstandard2.0/PhoneNumbers.xml",
+        "lib/portable-net45+win8+wp8+wpa81/PhoneNumbers.dll",
+        "lib/portable-net45+win8+wp8+wpa81/PhoneNumbers.xml",
+        "libphonenumber-csharp.8.12.38.nupkg.sha512",
+        "libphonenumber-csharp.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/5.0.13": {

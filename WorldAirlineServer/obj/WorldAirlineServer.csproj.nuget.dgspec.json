@@ -181,6 +181,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "libphonenumber-csharp": {
+              "target": "Package",
+              "version": "[8.12.38, )"
             }
           },
           "imports": [
