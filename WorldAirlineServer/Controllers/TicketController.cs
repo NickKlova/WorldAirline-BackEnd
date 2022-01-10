@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,154 +8,177 @@ using System.Threading.Tasks;
 using WADatabase.Administration.Managment;
 using WADatabase.Models.API.Request;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace WorldAirlineServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TicketController : ControllerBase
     {
+        private TicketManagment _db;
+        public TicketController(TicketManagment dbClient)
+        {
+            _db = dbClient;
+        }
         [HttpGet]
         [Route("/getTicketSchemeByWayId")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator, pilot, logistician")]
         public async Task<IActionResult> GetTicketSchemeByWayId(int wayId)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
-
-                var result = await db.GetTicketSchemeByWayId(wayId);
-
-                return StatusCode(200, result);
+                var response = await _db.GetTicketSchemeByWayIdAsync(wayId);
+                if (response == null)
+                    return StatusCode(404, "Not found");
+                else
+                    return StatusCode(200, response);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
         [Route("/getTicketShemeById")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator, pilot, logistician")]
         public async Task<IActionResult> GetTicketShemeById(int id)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
-
-                var result = await db.GetTicketSchemeById(id);
-
-                return StatusCode(200, result);
+                var response = await _db.GetTicketSchemeByIdAsync(id);
+                if (response == null)
+                    return StatusCode(404, "Not found");
+                else
+                    return StatusCode(200, response);
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
         [Route("/createTicketSheme")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreateTicketScheme(ReceiveTicketScheme ticketScheme)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
+                await _db.CreateTicketSchemeAsync(ticketScheme);
 
-                await db.CreateTicketSchemeAsync(ticketScheme);
-
-                return StatusCode(200);
+                return StatusCode(200, "Created");
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpPut]
         [Route("/updateFlightStatusByWayId")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdateFlightStatusByWayId(int wayId, DateTime departureDate, bool status)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
+                await _db.FlightStatusChangeAsync(wayId, departureDate, status);
 
-                await db.FlightStatusChangeByWayAsync(wayId, departureDate, status);
-
-                return StatusCode(200);
+                return StatusCode(200, "Updated");
             }
-            catch
+            catch(Exception e)
             {
-                return BadRequest();
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
 
         [HttpPut]
         [Route("/updateFlightStatusById")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdateFlightStatusById(int id, bool status)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
-                await db.FlightStatusChangeByIdAsync(id, status);
+                await _db.FlightStatusChangeAsync(id, status);
 
-                return StatusCode(200);
+                return StatusCode(200, "Updated");
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(400);
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
 
         [HttpPut]
         [Route("/updatePlaneInTicketScheme")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdatePlaneInTicketScheme(int wayId, int planeId)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
+                await _db.UpdateTicketShemePlaneAsync(wayId, planeId);
 
-                await db.UpdateTicketShemePlaneByWayIdAsync(wayId, planeId);
-
-                return StatusCode(200);
+                return StatusCode(200, "Updated");
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(400);
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
         [Route("/createTicket")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreateTicket(int ticketAmount, string travelClass, decimal price, ReceivedTicket incomingTicket)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
+                await _db.CreateTicketsAsync(ticketAmount, travelClass, price, incomingTicket);
 
-                await db.CreateTicketsAsync(ticketAmount, travelClass, price, incomingTicket);
-
-                return StatusCode(200);
+                return StatusCode(200, "Created");
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(400);
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
 
         [HttpDelete]
         [Route("/deleteTicket")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteTicket(DateTime departureDate, DateTime arrivalDate, int ticketScheme)
         {
             try
             {
-                TicketManagment db = new TicketManagment();
+                await _db.DeleteTicketsAsync(departureDate, arrivalDate, ticketScheme);
 
-                await db.DeleteTicketsAsync(departureDate, arrivalDate, ticketScheme);
-
-                return StatusCode(200);
+                return StatusCode(200, "Deleted");
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(400);
+                if (e.Message == "Bad data!")
+                    return StatusCode(400, e.Message);
+                else
+                    return StatusCode(500, e.Message);
             }
         }
     }
