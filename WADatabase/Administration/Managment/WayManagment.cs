@@ -6,48 +6,56 @@ using System.Text;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Models.API.Request;
+using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class WayManagment
+    public class WayManagment : Interfaces.IWay
     {
-        public async Task<IEnumerable<Models.API.Response.ReturnWay>> GetAllWays()
+        private WorldAirlinesClient _db;
+        public WayManagment(WorldAirlinesClient dbClient)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            _db = dbClient;
+        }
+        public async Task<IEnumerable<ReturnWay>> GetAllWaysAsync()
+        {
+            await using (_db)
             {
-                var ways = db.context.Ways
-                    .Include(x=>x.ArrivalAirport)
-                    .Include(x=>x.ArrivalAirport.Location)
-                    .Include(x=>x.DepartureAirport)
-                    .Include(x=>x.DepartureAirport.Location)
+                var ways = _db.context.Ways
+                    .Include(x => x.ArrivalAirport)
+                    .Include(x => x.ArrivalAirport.Location)
+                    .Include(x => x.DepartureAirport)
+                    .Include(x => x.DepartureAirport.Location)
                     .ToListAsync()
                     .Result;
 
-                List<Models.API.Response.ReturnWay> response = new List<Models.API.Response.ReturnWay>(); 
-                foreach(var way in ways)
+                if (ways == null)
+                    return null;
+
+                List<ReturnWay> response = new List<ReturnWay>();
+
+                foreach (var way in ways)
                 {
-                    Models.API.Response.ReturnWay item = new Models.API.Response.ReturnWay
+                    ReturnWay item = new ReturnWay
                     {
                         Id = way.Id,
                         FlightDuration = way.FlightDuration,
-                        DepartureAirport = new Models.API.Response.ReturnAirport
+                        DepartureAirport = new ReturnAirport
                         {
                             Id = way.DepartureAirport.Id,
                             Name = way.DepartureAirport.Name,
-                            Location = new Models.API.Response.ReturnLocation
+                            Location = new ReturnLocation
                             {
                                 Id = way.DepartureAirport.Location.Id,
                                 City = way.DepartureAirport.Location.City,
                                 Country = way.DepartureAirport.Location.Country
                             }
                         },
-                        ArrivalAirport = new Models.API.Response.ReturnAirport
+                        ArrivalAirport = new ReturnAirport
                         {
                             Id = way.ArrivalAirport.Id,
                             Name = way.ArrivalAirport.Name,
-                            Location = new Models.API.Response.ReturnLocation
+                            Location = new ReturnLocation
                             {
                                 Id = way.ArrivalAirport.Location.Id,
                                 City = way.ArrivalAirport.Location.City,
@@ -63,60 +71,57 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-
-        public async Task<Models.API.Response.ReturnWay> GetWayById(int id)
+        public async Task<ReturnWay> GetWayAsync(int id)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var way = db.context.Ways
+                var way = _db.context.Ways
                     .Include(x => x.ArrivalAirport)
                     .Include(x => x.ArrivalAirport.Location)
                     .Include(x => x.DepartureAirport)
                     .Include(x => x.DepartureAirport.Location)
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x=>x.Id == id);
+                    .FirstOrDefault(x => x.Id == id);
 
-                    Models.API.Response.ReturnWay response = new Models.API.Response.ReturnWay
+                if (way == null)
+                    return null;
+
+                ReturnWay response = new ReturnWay
+                {
+                    Id = way.Id,
+                    FlightDuration = way.FlightDuration,
+                    DepartureAirport = new ReturnAirport
                     {
-                        Id = way.Id,
-                        FlightDuration = way.FlightDuration,
-                        DepartureAirport = new Models.API.Response.ReturnAirport
+                        Id = way.DepartureAirport.Id,
+                        Name = way.DepartureAirport.Name,
+                        Location = new ReturnLocation
                         {
-                            Id = way.DepartureAirport.Id,
-                            Name = way.DepartureAirport.Name,
-                            Location = new Models.API.Response.ReturnLocation
-                            {
-                                Id = way.DepartureAirport.Location.Id,
-                                City = way.DepartureAirport.Location.City,
-                                Country = way.DepartureAirport.Location.Country
-                            }
-                        },
-                        ArrivalAirport = new Models.API.Response.ReturnAirport
+                            Id = way.DepartureAirport.Location.Id,
+                            City = way.DepartureAirport.Location.City,
+                            Country = way.DepartureAirport.Location.Country
+                        }
+                    },
+                    ArrivalAirport = new ReturnAirport
+                    {
+                        Id = way.ArrivalAirport.Id,
+                        Name = way.ArrivalAirport.Name,
+                        Location = new ReturnLocation
                         {
-                            Id = way.ArrivalAirport.Id,
-                            Name = way.ArrivalAirport.Name,
-                            Location = new Models.API.Response.ReturnLocation
-                            {
-                                Id = way.ArrivalAirport.Location.Id,
-                                City = way.ArrivalAirport.Location.City,
-                                Country = way.ArrivalAirport.Location.Country
-                            }
-                        },
-                        Actual = way.Actual
-                    };
+                            Id = way.ArrivalAirport.Location.Id,
+                            City = way.ArrivalAirport.Location.City,
+                            Country = way.ArrivalAirport.Location.Country
+                        }
+                    },
+                    Actual = way.Actual
+                };
 
                 return response;
             }
         }
-
-        public async Task CreateWay(ReceivedWay incomingData) 
+        public async Task CreateWayAsync(ReceivedWay incomingData)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
                 Models.DB_Request.Way item = new Models.DB_Request.Way
                 {
@@ -126,39 +131,15 @@ namespace WADatabase.Administration.Managment
                     Actual = incomingData.Actual
                 };
 
-                db.context.Add(item);
-                db.context.SaveChanges();
+                _db.context.Add(item);
+                _db.context.SaveChanges();
             }
         }
-
-        public async Task ChangeWayActuality(int wayId, bool actuality)
+        public async Task ChangeWayActualityAsync(int wayId, bool actuality)
         {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
+            await using (_db)
             {
-                var ways = db.context.Ways
-                    .Include(x => x.ArrivalAirport)
-                    .Include(x => x.ArrivalAirport.Location)
-                    .Include(x => x.DepartureAirport)
-                    .Include(x => x.DepartureAirport.Location)
-                    .ToListAsync()
-                    .Result
-                    .FirstOrDefault(x=>x.Id == wayId);
-
-                ways.Actual = actuality;
-
-                db.context.SaveChanges();
-            }
-        }
-
-        public async Task DeleteWay(int wayId)
-        {
-            WorldAirlinesClient db = new WorldAirlinesClient();
-
-            await using (db.context)
-            {
-                var ways = db.context.Ways
+                var way = _db.context.Ways
                     .Include(x => x.ArrivalAirport)
                     .Include(x => x.ArrivalAirport.Location)
                     .Include(x => x.DepartureAirport)
@@ -167,8 +148,32 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .FirstOrDefault(x => x.Id == wayId);
 
-                db.context.Remove(ways);
-                db.context.SaveChanges();
+                if (way == null)
+                    throw new Exception("Bad data!");
+
+                way.Actual = actuality;
+
+                _db.context.SaveChanges();
+            }
+        }
+        public async Task DeleteWayAsync(int wayId)
+        {
+            await using (_db)
+            {
+                var way = _db.context.Ways
+                    .Include(x => x.ArrivalAirport)
+                    .Include(x => x.ArrivalAirport.Location)
+                    .Include(x => x.DepartureAirport)
+                    .Include(x => x.DepartureAirport.Location)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Id == wayId);
+
+                if (way == null)
+                    throw new Exception("Bad data!");
+
+                _db.context.Remove(way);
+                _db.context.SaveChanges();
             }
         }
     }
