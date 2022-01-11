@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PlaneManagment // : Interfaces.IPlane
+    public class PlaneManagment  : Interfaces.IPlane
     {
         private WorldAirlinesClient _db;
         public PlaneManagment(WorldAirlinesClient dbClient)
@@ -103,7 +103,7 @@ namespace WADatabase.Administration.Managment
                     .FirstOrDefault(x => x.Id == id);
 
                 if (plane == null)
-                    throw new Exception("Bad data!");
+                    throw new Exception("The specified aircraft was not found in the database!");
 
                 _db.context.Remove(plane);
                 _db.context.SaveChanges();

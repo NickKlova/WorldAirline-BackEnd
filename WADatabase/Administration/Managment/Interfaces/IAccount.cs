@@ -8,7 +8,7 @@ namespace WADatabase.Administration.Managment.Interfaces
 {
     public interface IAccount
     {
-        public Task<Models.API.Response.ReturnAccount> GetAccountAsync(int id);
+        public Task<Models.API.Response.ReturnAccount> GetAccountAsync(int? id);
         public Task<Models.API.Response.ReturnAccount> GetAccountAsync(string login);
         public Task<IEnumerable<Models.API.Response.ReturnAccount>> GetAccountsByPersonalInfo(string name, string surname);
         public Task RegisterAccountAsync(Models.API.Request.ReceivedAccount model);

@@ -10,7 +10,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class TicketController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/allTickets/fullInfo")]
+        [Route("ticket/get/all/fullInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> GetAllTicketsFullInfo(int schemeId)
@@ -42,7 +42,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/allTickets/shortInfo")]
+        [Route("ticket/get/all/shortInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> GetAllTicketsShortInfo(int schemeId)
@@ -63,7 +63,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/bookedTickets/fullInfo")]
+        [Route("ticket/get/booked/fullInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> GetBookedTicketsFull(int schemeId)
@@ -84,7 +84,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/bookedTickets/shortInfo")]
+        [Route("ticket/get/booked/shortInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> GetBookedTicketsShort(int schemeId)
@@ -105,7 +105,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/unBookedTickets/fullInfo")]
+        [Route("ticket/get/unbooked/fullInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetUnBookedTicketsFull(int schemeId)
@@ -126,7 +126,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/unBookedTickets/shortInfo")]
+        [Route("ticket/get/unbooked/shortInfo")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetUnBookedTicketsShort(int schemeId)
@@ -147,7 +147,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/get/TicketSchemeByWayId")]
+        [Route("ticket/get/ticketScheme/byWayId")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager, pilot, logistician")]
         public async Task<IActionResult> GetTicketSchemeByWayId(int wayId)
@@ -168,7 +168,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpGet]
-        [Route("/get/TicketShemeById")]
+        [Route("ticket/get/ticketSheme/byId")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager, pilot, logistician")]
         public async Task<IActionResult> GetTicketShemeById(int id)
@@ -189,7 +189,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/create/ticketSheme")]
+        [Route("ticket/create/scheme")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreateTicketScheme(ReceiveTicketScheme ticketScheme)
@@ -207,7 +207,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpPost]
-        [Route("/create/tickets")]
+        [Route("ticket/create")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> CreateTickets(ReceivedTicket incomingTicket)
@@ -225,7 +225,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPatch]
-        [Route("/update/flightStatusByWayId")]
+        [Route("ticket/update/flightStatus/byWayId")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdateFlightStatusBySchemeId(int schemeId, bool status)
@@ -243,7 +243,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpPatch]
-        [Route("/update/flightStatusById")]
+        [Route("ticket/update/flightStatus/byId")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdateFlightStatusById(int id, bool status)
@@ -261,7 +261,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpPatch]
-        [Route("/update/planeInTicketScheme")]
+        [Route("ticket/update/plane/scheme")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdatePlaneInTicketScheme(int schemeId, int planeId)
@@ -279,7 +279,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpPatch]
-        [Route("/update/priceInTicket")]
+        [Route("ticket/update/price")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator, manager")]
         public async Task<IActionResult> UpdatePriceInTicket(int schemeId, decimal price)
@@ -297,7 +297,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpDelete]
-        [Route("/delete/tickets")]
+        [Route("ticket/delete/all")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteTickets(int ticketScheme)
@@ -315,7 +315,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpDelete]
-        [Route("/delete/ticket")]
+        [Route("ticket/delete")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteTicket(int id)
@@ -333,7 +333,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpDelete]
-        [Route("/delete/ticketScheme")]
+        [Route("ticket/delete/scheme")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteTicketScheme(int id)

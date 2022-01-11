@@ -11,7 +11,7 @@ using WADatabase.Administration.Managment;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class CrewController : ControllerBase
     {
@@ -22,10 +22,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getCrew")]
+        [Route("crew/get")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> GetCrewByTicketId(int ticketId)
+        [Authorize(Roles = "admin, moderator, manager, pilot")]
+        public async Task<IActionResult> GetCrew([FromQuery] int ticketId)
         {
             try
             {
@@ -43,10 +43,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/addPilotToTheCrew")]
+        [Route("crew/add/pilot")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> AddPilot(string pilotLogin, int ticketId, string position)
+        public async Task<IActionResult> AddPilot([FromQuery] string pilotLogin, [FromQuery] int ticketId, [FromQuery] string position)
         {
             try
             {
@@ -54,20 +54,17 @@ namespace WorldAirlineServer.Controllers
 
                 return StatusCode(200);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deletePilotFromTheCrew")]
+        [Route("crew/delete/pilot")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> DeletePilotFromTheCrew(string login)
+        public async Task<IActionResult> DeletePilotFromTheCrew([FromQuery] string login)
         {
             try
             {
@@ -77,18 +74,15 @@ namespace WorldAirlineServer.Controllers
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deleteCrew")]
+        [Route("crew/delete/crew")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> CrewDelete(int ticketId)
+        public async Task<IActionResult> CrewDelete([FromQuery] int ticketId)
         {
             try
             {
@@ -98,10 +92,7 @@ namespace WorldAirlineServer.Controllers
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500);
+                return StatusCode(400, e.Message);
             }
         }
     }

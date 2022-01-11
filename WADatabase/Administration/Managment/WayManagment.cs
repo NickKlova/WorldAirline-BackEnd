@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class WayManagment //: Interfaces.IWay
+    public class WayManagment : Interfaces.IWay
     {
         private WorldAirlinesClient _db;
         public WayManagment(WorldAirlinesClient dbClient)
@@ -149,7 +149,7 @@ namespace WADatabase.Administration.Managment
                     .FirstOrDefault(x => x.Id == wayId);
 
                 if (way == null)
-                    throw new Exception("Bad data!");
+                    throw new Exception("The specified path was not found in the database!");
 
                 way.Actual = actuality;
 
@@ -170,7 +170,7 @@ namespace WADatabase.Administration.Managment
                     .FirstOrDefault(x => x.Id == wayId);
 
                 if (way == null)
-                    throw new Exception("Bad data!");
+                    throw new Exception("The specified path was not found in the database!");
 
                 _db.context.Remove(way);
                 _db.context.SaveChanges();

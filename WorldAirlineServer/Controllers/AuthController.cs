@@ -15,23 +15,23 @@ using WADatabase.Administration.Managment;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         public readonly AuthManagment _dynamoDbClient;
-        public AuthController(AuthManagment dynamoDbClient)
+        private readonly AccountManagment _accountDb;
+        public AuthController(AuthManagment dynamoDbClient, AccountManagment accountDbClient)
         {
             _dynamoDbClient = dynamoDbClient;
+            _accountDb = accountDbClient;
         }
 
         //[HttpPost]
-        //[Route("/getToken")]
+        //[Route("auth/getToken")]
         //public async Task<IActionResult> Token(string login, string password)
         //{
-        //    AccountManagment account = new AccountManagment();
-
-        //    var identity = await account.GetIdentity(login, password);
+        //    var identity = await _accountDb.GetIdentity(login, password);
         //    if (identity == null)
         //    {
         //        return BadRequest("Invalid username or password.");
@@ -62,7 +62,7 @@ namespace WorldAirlineServer.Controllers
         //}
 
         [HttpPost]
-        [Route("/refreshToken")]
+        [Route("auth/refreshToken")]
         public async Task<IActionResult> Refresh(string token, string refreshToken)
         {
             var principal = TokenSetUp.GetPrincipalFromExpiredToken(token);
@@ -87,7 +87,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getRefreshTokenByLogin")]
+        [Route("auth/getRefreshTokenByLogin")]
         public async Task<IActionResult> GetRefreshToken(string login)
         {
             try
@@ -106,7 +106,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/createRefreshTokenRecord")]
+        [Route("auth/createRefreshTokenRecord")]
         public async Task<IActionResult> CreateRecord(RefreshToken incomingData)
         {
             try
@@ -122,7 +122,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPut]
-        [Route("/updateRefreshTokenByLogin")]
+        [Route("auth/updateRefreshTokenByLogin")]
         public async Task<IActionResult> UpdateRefreshToken(string login, string token)
         {
             try
@@ -138,7 +138,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPut]
-        [Route("/updateLoginByLogin")]
+        [Route("auth/updateLoginByLogin")]
         public async Task<IActionResult> UpdateLogin(string oldLogin, string newLogin)
         {
             try
@@ -154,7 +154,7 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpDelete]
-        [Route("/deleteRefreshTokenRecord")]
+        [Route("auth/deleteRefreshTokenRecord")]
         public async Task<IActionResult> DeleteRecord(string login)
         {
             try

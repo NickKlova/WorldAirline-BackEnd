@@ -11,7 +11,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class WayController : ControllerBase
     {
@@ -21,102 +21,96 @@ namespace WorldAirlineServer.Controllers
             _db = dbClient;
         }
         [HttpGet]
-        [Route("/getAllWays")]
+        [Route("way/get/all")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, pilot, logistician, user")]
+        [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetAllWays()
         {
             try
             {
                 var response = await _db.GetAllWaysAsync();
                 if (response == null)
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
-        [Route("/getWay")]
+        [Route("way/get")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, pilot, logistician")]
+        [Authorize(Roles = "admin, moderator, pilot, logistician, manager")]
         public async Task<IActionResult> GetWay(int id)
         {
             try
             {
                 var response = await _db.GetWayAsync(id);
                 if (response == null)
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
-        [Route("/createWay")]
+        [Route("way/create")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, logistician")]
+        [Authorize(Roles = "admin, moderator, logistician")]
         public async Task<IActionResult> CreateWay(ReceivedWay incomingData)
         {
             try
             {
                 await _db.CreateWayAsync(incomingData);
 
-                return StatusCode(201, "Created");
+                return StatusCode(201, "Created!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(400, e.Message);
             }
         }
 
-        [HttpPut]
-        [Route("/updateActuality")]
+        [HttpPatch]
+        [Route("way/update/actuality")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, pilot, logistician")]
+        [Authorize(Roles = "admin, moderator, pilot, logistician")]
         public async Task<IActionResult> ChangeActuality(int wayId, bool status)
         {
             try
             {
                 await _db.ChangeWayActualityAsync(wayId, status);
 
-                return StatusCode(200, "Updated");
+                return StatusCode(200, "Updated!");
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deleteWay")]
+        [Route("way/delete")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, logistician")]
+        [Authorize(Roles = "admin, moderator, logistician")]
         public async Task<IActionResult> DeleteWay(int wayId)
         {
             try
             {
                 await _db.DeleteWayAsync(wayId);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
     }

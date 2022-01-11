@@ -11,7 +11,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class PassengerController : ControllerBase
     {
@@ -21,10 +21,10 @@ namespace WorldAirlineServer.Controllers
             _db = dbClient;
         }
         [HttpGet]
-        [Route("/getPassenger")]
+        [Route("passenger/get")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> GetPassengerByPassportSeries(int id)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> GetPassengerByPassportSeries([FromQuery] int id)
         {
             try
             {
@@ -42,10 +42,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getPassengersBySurname")]
+        [Route("passenger/get/bySurname")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> GetPassengerBySurname(string surname)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> GetPassengerBySurname([FromQuery] string surname)
         {
             try
             {
@@ -63,10 +63,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/createPassenger")]
+        [Route("passenger/create")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, user")]
-        public async Task<IActionResult> CreatePassenger(ReceivedPassenger incomingData)
+        [Authorize(Roles = "admin, moderator, user")]
+        public async Task<IActionResult> CreatePassenger([FromBody] ReceivedPassenger incomingData)
         {
             try
             {
@@ -81,10 +81,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpDelete]
-        [Route("/deletePassenger")]
+        [Route("passenger/delete")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> DeletePassenger(int id)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> DeletePassenger([FromQuery] int id)
         {
             try
             {
@@ -94,10 +94,7 @@ namespace WorldAirlineServer.Controllers
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500);
+                return StatusCode(400, e.Message);
             }
         }
     }

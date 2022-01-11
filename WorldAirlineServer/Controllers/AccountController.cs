@@ -18,7 +18,7 @@ using WorldAirlineServer.Models.Account.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -30,10 +30,10 @@ namespace WorldAirlineServer.Controllers
             _dynamoDbClient = dynamoDbClient;
         }
         [HttpGet]
-        [Route("/getAccountById")]
+        [Route("account/get/byId")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> GetAccount(int id)
+        public async Task<IActionResult> GetAccount([FromQuery] int id)
         {
             try
             {
@@ -42,19 +42,19 @@ namespace WorldAirlineServer.Controllers
                 if (response != null)
                     return StatusCode(200, response);
                 else
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
-        [Route("/getAccountByLogin")]
+        [Route("account/get/byLogin")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> GetAccount(string login)
+        public async Task<IActionResult> GetAccount([FromQuery] string login)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace WorldAirlineServer.Controllers
                 if (response != null)
                     return StatusCode(200, response);
                 else
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
             }
             catch (Exception e)
             {
@@ -72,9 +72,9 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/signUpAccount")]
+        [Route("account/signUp")]
         [EnableCors("WACorsPolicy")]
-        public async Task<IActionResult> LoginAccount([FromBody] AccountLogin incomingData)
+        public async Task<IActionResult> SignUp([FromBody] AccountLogin incomingData)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace WorldAirlineServer.Controllers
                 var identity = await _db.GetIdentity(incomingData.Login, encryptedPassword);
                 if (identity == null)
                 {
-                    throw new Exception("Invalid username or password.");
+                  return StatusCode(401, "Invalid username or password.");
                 }
                 else
                 {
@@ -119,9 +119,9 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/registerAccount")]
+        [Route("account/register")]
         [EnableCors("WACorsPolicy")]
-        public async Task<IActionResult> CreateAccount([FromBody] ReceivedAccount incomingData)
+        public async Task<IActionResult> Register([FromBody] ReceivedAccount incomingData)
         {
             try
             {
@@ -156,9 +156,9 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPut]
-        [Route("/changeLogin")]
+        [Route("account/change/login")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        [Authorize(Roles = "admin, moderator, manager, pilot, user, logistician")]
         public async Task<IActionResult> ChangeLogin([FromBody] ChangeLogin incomingData)
         {
             try
@@ -188,21 +188,18 @@ namespace WorldAirlineServer.Controllers
 
                 await _dynamoDbClient.CreateRecord(data);
 
-                return StatusCode(201, response);
+                return StatusCode(200, response);
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpPut]
-        [Route("/changePassword")]
+        [Route("account/change/password")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        [Authorize(Roles = "admin, moderator, manager, pilot, user, logistician")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePassword incomingData)
         {
             try
@@ -215,19 +212,16 @@ namespace WorldAirlineServer.Controllers
 
                 await _db.ChangeAccountPasswordAsync(login, encryptedOldPassword, encryptedNewPassword);
 
-                return StatusCode(201, "Updated");
+                return StatusCode(200, "Updated!");
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deleteAccount")]
+        [Route("account/delete")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteAccount(string login)
@@ -236,16 +230,13 @@ namespace WorldAirlineServer.Controllers
             {
                 await _dynamoDbClient.DeleteRecordByLogin(login);
 
-                await _db.DeleteAccountAsync(login); 
+                await _db.DeleteAccountAsync(login);
 
-                return StatusCode(201, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
     }

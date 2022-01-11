@@ -11,7 +11,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class PilotController : ControllerBase
     {
@@ -21,16 +21,17 @@ namespace WorldAirlineServer.Controllers
             _db = dbClient;
         }
         [HttpGet]
-        [Route("/getPilot")]
+        [Route("pilot/get")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, ")]
-        public async Task<IActionResult> GetPilot(string login)
+        [Authorize(Roles = "admin, moderator, manager, pilot")]
+        public async Task<IActionResult> GetPilot([FromQuery] string login)
         {
             try
             {
                 var response = await _db.GetPilotAsync(login);
+
                 if (response == null)
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
             }
@@ -41,16 +42,16 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getPilotByPersonalInfo")]
+        [Route("pilot/get/byPersonalInfo")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, pilot, user, logistician")]
-        public async Task<IActionResult> GetPilot(string name, string surname)
+        [Authorize(Roles = "admin, moderator, pilot")]
+        public async Task<IActionResult> GetPilot([FromQuery] string name, [FromQuery] string surname)
         {
             try
             {
                 var response = await _db.GetPilotByPersonalInfo(name, surname);
                 if (response == null)
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
             }
@@ -60,66 +61,57 @@ namespace WorldAirlineServer.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("/updateFlyingHours")]
+        [HttpPatch]
+        [Route("pilot/update/flyingHours")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> UpdateFlyingHours(int amount, string login)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> UpdateFlyingHours([FromQuery] int amount, [FromQuery] string login)
         {
             try
             {
                 await _db.UpdateFlyingHoursAsync(amount, login);
 
-                return StatusCode(200, "Updated");
+                return StatusCode(200, "Updated!");
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpPost]
-        [Route("/createPilot")]
+        [Route("pilot/create")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> CreatePilot(ReceivedPilot incomingData)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> CreatePilot([FromBody] ReceivedPilot incomingData)
         {
             try
             {
                 await _db.CreatePilotAsync(incomingData);
 
-                return StatusCode(201, "Created");
+                return StatusCode(201, "Created!");
             }
             catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deletePilot")]
+        [Route("pilot/delete")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> DeletePilot(int id)
+        [Authorize(Roles = "admin, moderator")]
+        public async Task<IActionResult> DeletePilot([FromQuery] int id)
         {
             try
             {
                 await _db.DeletePilotAsync(id);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
     }

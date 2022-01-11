@@ -11,7 +11,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class AirportController : ControllerBase
     {
@@ -22,10 +22,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getAirportById")]
+        [Route("airport/get/byId")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, logistician")]
-        public async Task<IActionResult> GetAirportById(int id)
+        [Authorize(Roles = "admin, moderator, manager, pilot, logistician")]
+        public async Task<IActionResult> GetAirport([FromQuery] int id)
         {
             try
             {
@@ -43,10 +43,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getAirportsByCountry")]
+        [Route("airport/get/byCountry")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
-        public async Task<IActionResult> GetAirportsByCountry(string country)
+        [Authorize(Roles = "admin, moderator, pilot, manager, user, logistician")]
+        public async Task<IActionResult> GetAirport([FromQuery] string country)
         {
             try
             {
@@ -64,9 +64,9 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("/getAllAirports")]
+        [Route("airport/get/all")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        [Authorize(Roles = "admin, moderator, manager, pilot, user, logistician")]
         public async Task<IActionResult> GetAllAirports()
         {
             try
@@ -85,16 +85,16 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("/createAirport")]
+        [Route("airport/create")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> CreateAirport(ReceivedAirport incomingData)
+        public async Task<IActionResult> CreateAirport([FromBody] ReceivedAirport incomingData)
         {
             try
             {
                 await _db.CreateAirportAsync(incomingData);
 
-                return StatusCode(200, "Created");
+                return StatusCode(201, "Created!");
             }
             catch(Exception e)
             {
@@ -103,7 +103,7 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpDelete]
-        [Route("/deleteAirport")]
+        [Route("airport/delete")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeleteAirport(int id)
@@ -112,14 +112,11 @@ namespace WorldAirlineServer.Controllers
             {
                 await _db.DeleteAirportAsync(id);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch(Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
     }

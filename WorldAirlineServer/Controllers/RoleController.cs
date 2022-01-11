@@ -10,7 +10,7 @@ using WADatabase.Administration.Managment;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -20,16 +20,16 @@ namespace WorldAirlineServer.Controllers
             _db = dbClient;
         }
         [HttpGet]
-        [Route("/getAllRoles")]
+        [Route("role/get/all")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetRoles()
         {
             try
             {
                 var response = await _db.GetAllRolesAsync();
                 if (response == null)
-                    return StatusCode(404, "Not found");
+                    return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
             }

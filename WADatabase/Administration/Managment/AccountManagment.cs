@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class AccountManagment /*: Interfaces.IAccount*/
+    public class AccountManagment : Interfaces.IAccount
     {
         private WorldAirlinesClient _db;
         public AccountManagment(WorldAirlinesClient dbClient)

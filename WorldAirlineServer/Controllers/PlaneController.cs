@@ -11,7 +11,7 @@ using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class PlaneController : ControllerBase
     {
@@ -21,9 +21,9 @@ namespace WorldAirlineServer.Controllers
             _db = dbClient;
         }
         [HttpGet]
-        [Route("/getAllPlanes")]
+        [Route("plane/get/all")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator, pilot")]
         public async Task<IActionResult> GetAllPlanes()
         {
             try
@@ -34,16 +34,16 @@ namespace WorldAirlineServer.Controllers
                 else
                     return StatusCode(200, response);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
 
         [HttpGet]
-        [Route("/getPlane")]
+        [Route("plane/get")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        [Authorize(Roles = "admin, moderator, pilot")]
         public async Task<IActionResult> GetPlane(int id)
         {
             try
@@ -54,48 +54,45 @@ namespace WorldAirlineServer.Controllers
                 else
                     return StatusCode(200, response);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
 
         [HttpPost]
-        [Route("/createPlane")]
+        [Route("plane/create")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreatePlane(ReceivedPlane incomingData)
         {
             try
             {
                 await _db.CreatePlaneAsync(incomingData);
 
-                return StatusCode(201, "Created");
+                return StatusCode(201, "Created!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return StatusCode(400, e.Message);
             }
         }
 
         [HttpDelete]
-        [Route("/deletePlane")]
+        [Route("plane/delete")]
         [EnableCors("WACorsPolicy")]
-        //[Authorize(Roles = "admin, moderator")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeletePlane(int id)
         {
             try
             {
                 await _db.DeletePlaneAsync(id);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if (e.Message == "Bad data!")
-                    return StatusCode(400, e.Message);
-                else
-                    return StatusCode(500, e.Message);
+                return StatusCode(400, e.Message);
             }
         }
     }
