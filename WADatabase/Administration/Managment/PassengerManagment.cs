@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PassengerManagment : Interfaces.IPassenger
+    public class PassengerManagment /*: Interfaces.IPassenger*/
     {
         private WorldAirlinesClient _db;
         public PassengerManagment(WorldAirlinesClient dbClient)
@@ -26,7 +26,7 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .Where(x => x.Surname == surname);
 
-                if (passengers == null)
+                if (passengers.Count() == 0)
                     return null;
 
                 List<ReturnPassenger> response = new List<ReturnPassenger>();
@@ -49,8 +49,11 @@ namespace WADatabase.Administration.Managment
             }
         }
 
-        public async Task<ReturnPassenger> GetPassengerAsync(int id)
+        public async Task<ReturnPassenger> GetPassengerAsync(int? id)
         {
+            if (id == null)
+                return null;
+
             await using (_db)
             {
                 var passenger = _db.context.Passengers

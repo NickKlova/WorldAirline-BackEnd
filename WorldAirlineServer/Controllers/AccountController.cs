@@ -71,7 +71,7 @@ namespace WorldAirlineServer.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/signUpAccount")]
         [EnableCors("WACorsPolicy")]
         public async Task<IActionResult> LoginAccount([FromBody] AccountLogin incomingData)
@@ -88,17 +88,26 @@ namespace WorldAirlineServer.Controllers
                 else
                 {
                     var awsModel = await _dynamoDbClient.GetTokenByLoginAsync(incomingData.Login);
+                    string refToken;
+                    if (awsModel == null)
+                    {
+                        refToken = TokenSetUp.GenerateRefreshToken();
+                    }
+                    else
+                    {
+                        refToken = awsModel.refreshToken;
+                    }
 
                     RefreshToken data = new RefreshToken
                     {
                         login = incomingData.Login,
-                        refreshToken = awsModel.refreshToken
+                        refreshToken = refToken
                     };
 
                     var response = new TokenResponse
                     {
                         Token = TokenSetUp.GenerateToken(identity.Claims),
-                        RefreshToken = awsModel.refreshToken
+                        RefreshToken = refToken
                     };
                     return StatusCode(200, response);
                 }
@@ -163,7 +172,7 @@ namespace WorldAirlineServer.Controllers
 
                 await _dynamoDbClient.DeleteRecordByLogin(login);
 
-                var identity = await _db.GetIdentity(incomingData.NewLogin, incomingData.Password);
+                var identity = await _db.GetIdentity(incomingData.NewLogin, encryptedPassword);
 
                 var response = new TokenResponse
                 {

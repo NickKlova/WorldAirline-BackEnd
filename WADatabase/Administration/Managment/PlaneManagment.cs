@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class PlaneManagment : Interfaces.IPlane
+    public class PlaneManagment // : Interfaces.IPlane
     {
         private WorldAirlinesClient _db;
         public PlaneManagment(WorldAirlinesClient dbClient)
@@ -37,7 +37,7 @@ namespace WADatabase.Administration.Managment
                         Id = plane.Id,
                         Number = plane.Number,
                         Model = plane.Model,
-                        ManufactureDate = plane.ManufactureDate,
+                        ManufactureDate = plane.ManufactureDate.ToShortDateString(),
                         LifeTime = plane.LifeTime,
                         Ok = plane.Ok
                     };
@@ -48,8 +48,11 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-        public async Task<ReturnPlane> GetPlaneAsync(int id)
+        public async Task<ReturnPlane> GetPlaneAsync(int? id)
         {
+            if (id == null)
+                return null;
+
             await using (_db)
             {
                 var plane = _db.context.Planes
@@ -65,7 +68,7 @@ namespace WADatabase.Administration.Managment
                     Id = plane.Id,
                     Number = plane.Number,
                     Model = plane.Model,
-                    ManufactureDate = plane.ManufactureDate,
+                    ManufactureDate = plane.ManufactureDate.ToShortDateString(),
                     LifeTime = plane.LifeTime,
                     Ok = plane.Ok
                 };

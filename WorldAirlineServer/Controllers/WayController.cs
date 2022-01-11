@@ -23,7 +23,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getAllWays")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, logistician, user")]
+        //[Authorize(Roles = "admin, moderator, pilot, logistician, user")]
         public async Task<IActionResult> GetAllWays()
         {
             try
@@ -43,7 +43,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getWay")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, logistician")]
+        //[Authorize(Roles = "admin, moderator, pilot, logistician")]
         public async Task<IActionResult> GetWay(int id)
         {
             try
@@ -63,7 +63,7 @@ namespace WorldAirlineServer.Controllers
         [HttpPost]
         [Route("/createWay")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, logistician")]
+        //[Authorize(Roles = "admin, moderator, logistician")]
         public async Task<IActionResult> CreateWay(ReceivedWay incomingData)
         {
             try
@@ -81,7 +81,7 @@ namespace WorldAirlineServer.Controllers
         [HttpPut]
         [Route("/updateActuality")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, logistician")]
+        //[Authorize(Roles = "admin, moderator, pilot, logistician")]
         public async Task<IActionResult> ChangeActuality(int wayId, bool status)
         {
             try
@@ -102,7 +102,7 @@ namespace WorldAirlineServer.Controllers
         [HttpDelete]
         [Route("/deleteWay")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, logistician")]
+        //[Authorize(Roles = "admin, moderator, logistician")]
         public async Task<IActionResult> DeleteWay(int wayId)
         {
             try

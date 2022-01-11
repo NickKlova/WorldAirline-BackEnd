@@ -27,9 +27,13 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .FirstOrDefault(x => x.Id == id);
 
+                if (airport == null)
+                    return null;
+
                 ReturnAirport response = new ReturnAirport
                 {
                     Id = airport.Id,
+                    Name = airport.Name,
                     Location = new ReturnLocation
                     {
                         Id = airport.Location.Id,
@@ -49,9 +53,9 @@ namespace WADatabase.Administration.Managment
                     .Include(x => x.Location)
                     .ToListAsync()
                     .Result
-                    .Where(x => x.Location.Country == country);
+                    .Where(x => x.Location.Country == country).Select(x=>x);
 
-                if (airports == null)
+                if (airports.Count() == 0)
                     return null;
 
                 List<ReturnAirport> response = new List<ReturnAirport>();
@@ -61,7 +65,8 @@ namespace WADatabase.Administration.Managment
                     ReturnAirport item = new ReturnAirport
                     {
                         Id = airport.Id,
-                        Location = new Models.API.Response.ReturnLocation
+                        Name = airport.Name,
+                        Location = new ReturnLocation
                         {
                             Id = airport.Location.Id,
                             City = airport.Location.City,
@@ -93,6 +98,7 @@ namespace WADatabase.Administration.Managment
                     ReturnAirport item = new ReturnAirport
                     {
                         Id = airport.Id,
+                        Name = airport.Name,
                         Location = new ReturnLocation
                         {
                             Id = airport.Location.Id,

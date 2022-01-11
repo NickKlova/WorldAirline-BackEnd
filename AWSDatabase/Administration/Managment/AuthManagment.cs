@@ -33,7 +33,7 @@ namespace AWSDatabase.Administration.Managment
 
             var response = await _dynamoDb.GetItemAsync(item);
             if (response.Item == null || !response.IsItemSet)
-                throw new Exception("Not found");
+                return null;
 
             var result = response.Item.ToClass<RefreshToken>();
             

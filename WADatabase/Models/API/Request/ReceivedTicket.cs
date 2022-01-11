@@ -9,9 +9,9 @@ namespace WADatabase.Models.API.Request
     public class ReceivedTicket
     {
         public int? TicketSchemeId { get; set; }
-        public int Seat { get; set; }
-        public int? TravelClassId { get; set; }
+        public string TravelClass { get; set; }
         public decimal Price { get; set; }
-        public bool Booked { get; set; }
+        public int Seat { get; set; }
+        public int TicketAmount { get; set; }
     }
 }

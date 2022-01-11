@@ -34,6 +34,7 @@ namespace WADatabase.Administration.Managment
                 ReturnPilot response = new ReturnPilot
                 {
                     Id = pilots.Id,
+                    FlyingHours = pilots.FlyingHours,
                     Account = new ReturnAccount
                     {
                         Id = pilots.Account.Id,
@@ -65,7 +66,7 @@ namespace WADatabase.Administration.Managment
                     .Result
                     .Where(x => x.Account.Name == name && x.Account.Surname == surname);
 
-                if (pilots == null)
+                if (pilots.Count() == 0)
                     return null;
 
                 List<ReturnPilot> response = new List<ReturnPilot>();
@@ -75,6 +76,7 @@ namespace WADatabase.Administration.Managment
                     ReturnPilot item = new ReturnPilot
                     {
                         Id = pilot.Id,
+                        FlyingHours = pilot.FlyingHours,
                         Account = new ReturnAccount
                         {
                             Id = pilot.Account.Id,
@@ -142,6 +144,7 @@ namespace WADatabase.Administration.Managment
                     throw new Exception("Bad data!");
 
                 pilot.FlyingHours += amount;
+                //_db.context.Update(pilot);
                 _db.context.SaveChanges();
             }
         }

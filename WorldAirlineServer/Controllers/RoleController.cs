@@ -22,7 +22,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getAllRoles")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetRoles()
         {
             try

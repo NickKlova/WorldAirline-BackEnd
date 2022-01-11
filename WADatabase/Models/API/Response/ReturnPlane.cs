@@ -11,7 +11,7 @@ namespace WADatabase.Models.API.Response
         public int Id { get; set; }
         public string Model { get; set; }
         public string Number { get; set; }
-        public DateTime ManufactureDate { get; set; }
+        public string ManufactureDate { get; set; }
         public int LifeTime { get; set; }
         public bool Ok { get; set; }
     }

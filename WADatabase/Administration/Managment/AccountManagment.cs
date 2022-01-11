@@ -10,15 +10,18 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class AccountManagment : Interfaces.IAccount
+    public class AccountManagment /*: Interfaces.IAccount*/
     {
         private WorldAirlinesClient _db;
         public AccountManagment(WorldAirlinesClient dbClient)
         {
             _db = dbClient;
         }
-        public async Task<ReturnAccount> GetAccountAsync(int id)
+        public async Task<ReturnAccount> GetAccountAsync(int? id)
         {
+            if (id == null)
+                return null;
+
             ReturnAccount response;
 
             await using (_db)
@@ -28,6 +31,9 @@ namespace WADatabase.Administration.Managment
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Id == id);
+
+                if (account == null)
+                    return null;
 
                 ReturnRole role;
 
@@ -70,6 +76,9 @@ namespace WADatabase.Administration.Managment
                     .ToListAsync()
                     .Result
                     .FirstOrDefault(x => x.Login == login);
+
+                if (account == null)
+                    return null;
 
                 ReturnRole role;
 

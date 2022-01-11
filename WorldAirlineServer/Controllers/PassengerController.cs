@@ -23,14 +23,14 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPassenger")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetPassengerByPassportSeries(int id)
         {
             try
             {
                 var response = await _db.GetPassengerAsync(id);
 
-                if (response != null)
+                if (response == null)
                     return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
@@ -44,14 +44,14 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPassengersBySurname")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> GetPassengerBySurname(string surname)
         {
             try
             {
                 var response = await _db.GetPassengersBySurnameAsync(surname);
 
-                if (response != null)
+                if (response == null)
                     return StatusCode(404, "Not found!");
                 else
                     return StatusCode(200, response);
@@ -65,7 +65,7 @@ namespace WorldAirlineServer.Controllers
         [HttpPost]
         [Route("/createPassenger")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, user")]
+        //[Authorize(Roles = "admin, moderator, user")]
         public async Task<IActionResult> CreatePassenger(ReceivedPassenger incomingData)
         {
             try
@@ -83,7 +83,7 @@ namespace WorldAirlineServer.Controllers
         [HttpDelete]
         [Route("/deletePassenger")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeletePassenger(int id)
         {
             try

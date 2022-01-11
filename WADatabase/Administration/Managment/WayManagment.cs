@@ -10,7 +10,7 @@ using WADatabase.Models.API.Response;
 
 namespace WADatabase.Administration.Managment
 {
-    public class WayManagment : Interfaces.IWay
+    public class WayManagment //: Interfaces.IWay
     {
         private WorldAirlinesClient _db;
         public WayManagment(WorldAirlinesClient dbClient)
@@ -71,7 +71,7 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-        public async Task<ReturnWay> GetWayAsync(int id)
+        public async Task<ReturnWay> GetWayAsync(int? id)
         {
             await using (_db)
             {

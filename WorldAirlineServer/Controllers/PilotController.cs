@@ -23,7 +23,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPilot")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, ")]
+        //[Authorize(Roles = "admin, moderator, ")]
         public async Task<IActionResult> GetPilot(string login)
         {
             try
@@ -43,7 +43,7 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("/getPilotByPersonalInfo")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, user, logistician")]
+        //[Authorize(Roles = "admin, moderator, pilot, user, logistician")]
         public async Task<IActionResult> GetPilot(string name, string surname)
         {
             try
@@ -63,7 +63,7 @@ namespace WorldAirlineServer.Controllers
         [HttpPut]
         [Route("/updateFlyingHours")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> UpdateFlyingHours(int amount, string login)
         {
             try
@@ -84,7 +84,7 @@ namespace WorldAirlineServer.Controllers
         [HttpPost]
         [Route("/createPilot")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreatePilot(ReceivedPilot incomingData)
         {
             try
@@ -105,7 +105,7 @@ namespace WorldAirlineServer.Controllers
         [HttpDelete]
         [Route("/deletePilot")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator")]
+        //[Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> DeletePilot(int id)
         {
             try
