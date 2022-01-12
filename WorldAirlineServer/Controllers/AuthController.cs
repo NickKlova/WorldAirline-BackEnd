@@ -4,6 +4,8 @@ using AWSDatabase.Administration.Managment;
 using AWSDatabase.Extensions;
 using AWSDatabase.Models.AmazonResponse;
 using JWTAuth.Settings;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Managment;
+using WorldAirlineServer.Models.Auth.Request;
 
 namespace WorldAirlineServer.Controllers
 {
@@ -20,58 +23,24 @@ namespace WorldAirlineServer.Controllers
     public class AuthController : ControllerBase
     {
         public readonly AuthManagment _dynamoDbClient;
-        private readonly AccountManagment _accountDb;
-        public AuthController(AuthManagment dynamoDbClient, AccountManagment accountDbClient)
+        public AuthController(AuthManagment dynamoDbClient)
         {
             _dynamoDbClient = dynamoDbClient;
-            _accountDb = accountDbClient;
         }
-
-        //[HttpPost]
-        //[Route("auth/getToken")]
-        //public async Task<IActionResult> Token(string login, string password)
-        //{
-        //    var identity = await _accountDb.GetIdentity(login, password);
-        //    if (identity == null)
-        //    {
-        //        return BadRequest("Invalid username or password.");
-        //    }
-        //    else
-        //    {
-        //        var refreshToken = TokenSetUp.GenerateRefreshToken();
-
-        //        RefreshToken data = new RefreshToken
-        //        {
-        //            login = login,
-        //            refreshToken = refreshToken
-        //        };
-
-        //        await _dynamoDbClient.CreateRecord(data);
-
-        //        var jwt = TokenSetUp.GenerateToken(identity.Claims);
-
-        //        var response = new
-        //        {
-        //            access_token = jwt,
-        //            refresh_token = refreshToken,
-        //            username = identity.Name
-        //        };
-
-        //        return Ok(response);
-        //    }
-        //}
 
         [HttpPost]
         [Route("auth/refreshToken")]
-        public async Task<IActionResult> Refresh(string token, string refreshToken)
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokens incomingData)
         {
-            var principal = TokenSetUp.GetPrincipalFromExpiredToken(token);
+            var principal = TokenSetUp.GetPrincipalFromExpiredToken(incomingData.Token);
 
             var login = principal.Identity.Name;
 
             var savedRefreshToken =  _dynamoDbClient.GetTokenByLoginAsync(login).Result.refreshToken;
 
-            if (savedRefreshToken != refreshToken)
+            if (savedRefreshToken != incomingData.RefreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
             var newJwtToken = TokenSetUp.GenerateToken(principal.Claims);
@@ -87,8 +56,10 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpGet]
-        [Route("auth/getRefreshTokenByLogin")]
-        public async Task<IActionResult> GetRefreshToken(string login)
+        [Route("auth/get/refreshToken")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetRefreshToken([FromQuery] string login)
         {
             try
             {
@@ -98,7 +69,7 @@ namespace WorldAirlineServer.Controllers
             }
             catch (Exception e)
             {
-                if (e.Message == "Not found")
+                if (e.Message == "Not found!")
                     return StatusCode(404, e.Message);
                 else
                     return StatusCode(500);
@@ -106,14 +77,16 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPost]
-        [Route("auth/createRefreshTokenRecord")]
-        public async Task<IActionResult> CreateRecord(RefreshToken incomingData)
+        [Route("auth/create/refreshToken")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateRecord([FromBody] RefreshToken incomingData)
         {
             try
             {
                 await _dynamoDbClient.CreateRecord(incomingData);
 
-                return StatusCode(201, "Created");
+                return StatusCode(201, "Created!");
             }
             catch(Exception e)
             {
@@ -122,14 +95,16 @@ namespace WorldAirlineServer.Controllers
         }
 
         [HttpPut]
-        [Route("auth/updateRefreshTokenByLogin")]
-        public async Task<IActionResult> UpdateRefreshToken(string login, string token)
+        [Route("auth/update/refreshToken")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateRefreshToken([FromBody] UpdateRefreshToken incomingData)
         {
             try
             {
-                await _dynamoDbClient.ChangeTokenByLoginAsync(login, token);
+                await _dynamoDbClient.ChangeTokenByLoginAsync(incomingData.Login, incomingData.RefreshToken); ;
 
-                return StatusCode(200, "Updated");
+                return StatusCode(200, "Updated!");
             }
             catch (Exception e)
             {
@@ -137,15 +112,17 @@ namespace WorldAirlineServer.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("auth/updateLoginByLogin")]
-        public async Task<IActionResult> UpdateLogin(string oldLogin, string newLogin)
+        [HttpPatch]
+        [Route("auth/change/login")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateLogin([FromQuery] string oldLogin, [FromQuery] string newLogin)
         {
             try
             {
                 await _dynamoDbClient.ChangeLoginByLoginAsync(oldLogin, newLogin);
 
-                return StatusCode(200, "Updated");
+                return StatusCode(200, "Updated!");
             }
             catch (Exception e)
             {
@@ -154,14 +131,16 @@ namespace WorldAirlineServer.Controllers
         }
         
         [HttpDelete]
-        [Route("auth/deleteRefreshTokenRecord")]
-        public async Task<IActionResult> DeleteRecord(string login)
+        [Route("auth/delete/refreshToken")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteRecord([FromQuery] string login)
         {
             try
             {
                 await _dynamoDbClient.DeleteRecordByLogin(login);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch (Exception e)
             {

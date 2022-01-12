@@ -23,7 +23,6 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("way/get/all")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetAllWays()
         {
             try

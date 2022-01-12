@@ -107,7 +107,6 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("ticket/get/unbooked/fullInfo")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetUnBookedTicketsFull(int schemeId)
         {
             try
@@ -128,7 +127,6 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("ticket/get/unbooked/shortInfo")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, manager, pilot, logistician, user")]
         public async Task<IActionResult> GetUnBookedTicketsShort(int schemeId)
         {
             try

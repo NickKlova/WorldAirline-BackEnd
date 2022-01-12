@@ -9,5 +9,6 @@ namespace WADatabase.Administration.Managment.Interfaces
     public interface IRole
     {
         public Task<IEnumerable<Models.API.Response.ReturnRole>> GetAllRolesAsync();
+        public Task GiveRoleAsync(string login, string role);
     }
 }

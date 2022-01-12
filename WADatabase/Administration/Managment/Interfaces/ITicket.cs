@@ -8,6 +8,8 @@ namespace WADatabase.Administration.Managment.Interfaces
 {
     public interface ITicket
     {
+        public Task<Models.API.Response.ReturnPurchasedTicketByCode> GetTicketByCodeAsync(string code);
+        public Task<IEnumerable<Models.API.Response.ReturnBuyTicket>> GetMyTicketsAsync(string login);
         public Task<IEnumerable<Models.API.Response.ReturnTicketScheme>> GetTicketSchemeByWayIdAsync(int? wayId);
         public Task<Models.API.Response.ReturnTicketScheme> GetTicketSchemeByIdAsync(int? id);
         public Task<IEnumerable<Models.API.Response.ReturnTicket.TicketFullInfo>> GetFullInfoTicketsAsync(int ticketSchemeId);

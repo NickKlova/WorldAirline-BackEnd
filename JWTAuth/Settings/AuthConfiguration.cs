@@ -12,7 +12,7 @@ namespace JWTAuth.Settings
         public static string ISSUER = "WorldAirlinesAuthServer"; 
         public static string AUDIENCE = "WorldAirlinesFrontEndClient"; 
         public static string KEY = "V29ybGRBaXJsaW5lc0NvbXBhbnlBbGxSaWdodHNBcmVSZXNlcnZlZA";  
-        public static int LIFETIME = 60; 
+        public static int LIFETIME = 600; 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));

@@ -217,7 +217,6 @@ namespace WADatabase.Administration.Managment
                     WayId = incomingTicketScheme.WayId,
                     PlaneId = incomingTicketScheme.PlaneId,
                     DepartureDate = incomingTicketScheme.DepartureDate,
-                    ArrivalDate = incomingTicketScheme.ArrivalDate,
                     Canceled = incomingTicketScheme.Canceled
                 };
 
@@ -475,6 +474,89 @@ namespace WADatabase.Administration.Managment
                     TravelClass = ticket.TravelClass.ClassName,
                     Message = "Have a good flight!"
                 };
+                return response;
+            }
+        }
+
+        public async Task<IEnumerable<ReturnBuyTicket>> GetMyTicketsAsync(string login)
+        {
+           await using (_db)
+            {
+                var tickets = _db.context.Tickets
+                    .Include(x => x.Account)
+                    .Include(x=>x.TicketScheme)
+                    .Include(x=>x.TicketScheme.Way)
+                    .Include(x => x.TicketScheme.Way.DepartureAirport)
+                    .Include(x => x.TicketScheme.Way.ArrivalAirport)
+                    .Include(x=>x.TravelClass)
+                    .ToListAsync()
+                    .Result
+                    .Where(x => x.Account != null && x.Account.Login == login && (x.TicketScheme.DepartureDate - DateTime.Now).TotalHours >= 0 && x.TicketScheme.Canceled != true && x.TicketScheme.Way.Actual != false);
+
+                if (tickets.Count() == 0)
+                    return null;
+
+                List<ReturnBuyTicket> response = new List<ReturnBuyTicket>();
+
+                foreach(var ticket in tickets)
+                {
+                    ReturnBuyTicket item = new ReturnBuyTicket
+                    {
+                        Code = ticket.Code,
+                        DepartureAirport = ticket.TicketScheme.Way.DepartureAirport.Name,
+                        ArrivalAirport = ticket.TicketScheme.Way.ArrivalAirport.Name,
+                        DepartureDate = ticket.TicketScheme.DepartureDate.ToUniversalTime(),
+                        ArrivalDate = ticket.TicketScheme.ArrivalDate.ToUniversalTime(),
+                        Seat = ticket.Seat,
+                        TravelClass = ticket.TravelClass.ClassName,
+                        Message = "Time left before departure: " + Convert.ToInt32((ticket.TicketScheme.DepartureDate - DateTime.Now).TotalHours) + " hours."
+                    };
+
+                    response.Add(item);
+                }
+
+                return response;
+            }
+        }
+
+        public async Task<ReturnPurchasedTicketByCode> GetTicketByCodeAsync(string code)
+        {
+            await using (_db)
+            {
+                var ticket = _db.context.Tickets
+                    .Include(x => x.Account)
+                    .Include(x => x.TicketScheme)
+                    .Include(x => x.TicketScheme.Way)
+                    .Include(x=>x.Passenger)
+                    .Include(x=>x.TicketScheme.Way.DepartureAirport.Location)
+                    .Include(x => x.TicketScheme.Way.ArrivalAirport.Location)
+                    .Include(x => x.TicketScheme.Way.DepartureAirport)
+                    .Include(x => x.TicketScheme.Way.ArrivalAirport)
+                    .Include(x => x.TravelClass)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Code == code);
+
+                if (ticket == null)
+                    return null;
+
+                ReturnPurchasedTicketByCode response = new ReturnPurchasedTicketByCode
+                {
+                    Code = code,
+                    Name = ticket.Passenger.Name,
+                    Surname = ticket.Passenger.Surname,
+                    DepartureLocation = $"Country: {ticket.TicketScheme.Way.DepartureAirport.Location.Country}, City: {ticket.TicketScheme.Way.DepartureAirport.Location.City}",
+                    ArrivalLocation = $"Country: {ticket.TicketScheme.Way.ArrivalAirport.Location.Country}, City: {ticket.TicketScheme.Way.ArrivalAirport.Location.City}",
+                    DepartureAirport = ticket.TicketScheme.Way.DepartureAirport.Name,
+                    ArrivalAirport = ticket.TicketScheme.Way.ArrivalAirport.Name,
+                    DepartureDate = ticket.TicketScheme.DepartureDate.ToUniversalTime(),
+                    ArrivalDate = ticket.TicketScheme.ArrivalDate.ToUniversalTime(),
+                    Seat = ticket.Seat,
+                    TravelClass = ticket.TravelClass.ClassName,
+                    WayIsActual = ticket.TicketScheme.Way.Actual,
+                    Canceled = ticket.TicketScheme.Canceled
+                };
+
                 return response;
             }
         }

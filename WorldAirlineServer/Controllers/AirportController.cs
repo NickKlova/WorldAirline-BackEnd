@@ -45,7 +45,6 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("airport/get/byCountry")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, pilot, manager, user, logistician")]
         public async Task<IActionResult> GetAirport([FromQuery] string country)
         {
             try
@@ -66,7 +65,6 @@ namespace WorldAirlineServer.Controllers
         [HttpGet]
         [Route("airport/get/all")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, manager, pilot, user, logistician")]
         public async Task<IActionResult> GetAllAirports()
         {
             try
@@ -106,7 +104,7 @@ namespace WorldAirlineServer.Controllers
         [Route("airport/delete")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> DeleteAirport(int id)
+        public async Task<IActionResult> DeleteAirport([FromQuery] int id)
         {
             try
             {

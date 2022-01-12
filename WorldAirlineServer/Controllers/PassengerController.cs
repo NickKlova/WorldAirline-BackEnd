@@ -65,14 +65,14 @@ namespace WorldAirlineServer.Controllers
         [HttpPost]
         [Route("passenger/create")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, user")]
+        [Authorize(Roles = "admin, moderator")]
         public async Task<IActionResult> CreatePassenger([FromBody] ReceivedPassenger incomingData)
         {
             try
             {
                 await _db.CreatePassengerAsync(incomingData);
 
-                return StatusCode(201, "Created");
+                return StatusCode(201, "Created!");
             }
             catch (Exception e)
             {
@@ -90,7 +90,7 @@ namespace WorldAirlineServer.Controllers
             {
                 await _db.DeletePassengerAsync(id);
 
-                return StatusCode(200, "Deleted");
+                return StatusCode(200, "Deleted!");
             }
             catch(Exception e)
             {

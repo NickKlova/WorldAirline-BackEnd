@@ -20,10 +20,11 @@ namespace WorldAirlineServer.Controllers
         {
             _db = dbClient;
         }
+
         [HttpGet]
         [Route("pilot/get")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin, moderator, manager, pilot")]
+        [Authorize(Roles = "admin, moderator, pilot")]
         public async Task<IActionResult> GetPilot([FromQuery] string login)
         {
             try

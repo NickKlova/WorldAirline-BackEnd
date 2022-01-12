@@ -11,7 +11,6 @@ namespace WADatabase.Models.API.Request
         public int? WayId { get; set; }
         public int? PlaneId { get; set; }
         public DateTime DepartureDate { get; set; }
-        public DateTime ArrivalDate { get; set; }
         public bool Canceled { get; set; }
     }
 }
