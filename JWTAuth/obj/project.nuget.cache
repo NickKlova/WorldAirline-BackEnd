@@ -1,14 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "NkqnSSR/LTUcCZT+tRa34RkRNAeJkmaT+m2qZNeeFxDCmMyu9HOMpci8QdSN5C8Ljwh6uiFqzaWb2XxWPnj+hw==",
+  "dgSpecHash": "x6uNi/CLt4Gw2By1/lnC3Axie3O8vxpyPvuJKxeWI5RXRE/OZ2atX+L7SXIaN/htd7Hw+yKW/mDmbCrq05s9Yg==",
   "success": true,
   "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\JWTAuth\\JWTAuth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.extensions.configuration\\6.0.0\\microsoft.extensions.configuration.6.0.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.15.0\\microsoft.identitymodel.jsonwebtokens.6.15.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.identitymodel.logging\\6.15.0\\microsoft.identitymodel.logging.6.15.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.15.0\\microsoft.identitymodel.tokens.6.15.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.15.0\\system.identitymodel.tokens.jwt.6.15.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
   ],
   "logs": []

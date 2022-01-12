@@ -51,7 +51,9 @@ namespace WorldAirlineServer
                 });
             });
 
-            var credentials = new BasicAWSCredentials("AKIAUNU6OOSDZ37UEL6I", "9j7qQUFMsACIgYQT1pvkmRjrWXe/pSZiQNBDCqwz");
+            string dbAWSAccessKey = Configuration.GetValue<string>("awsDynamoDb:access_key");
+            string dbAWSSecretKey = Configuration.GetValue<string>("awsDynamoDb:secret_key");
+            var credentials = new BasicAWSCredentials(dbAWSAccessKey, dbAWSSecretKey);
             var config = new AmazonDynamoDBConfig()
             {
                 RegionEndpoint = RegionEndpoint.USEast2
@@ -71,6 +73,9 @@ namespace WorldAirlineServer
             services.AddSingleton<RoleManagment>();
             services.AddSingleton<TicketManagment>();
             services.AddSingleton<WayManagment>();
+
+            string authSecretKEY = Configuration.GetValue<string>("jwt:encryption_code");
+            AuthConfiguration.KEY = authSecretKEY;
 
             services.AddAuthentication(options =>
             {

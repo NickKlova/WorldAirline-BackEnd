@@ -138,3 +138,7 @@ D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\obj\Debug\net5.
 D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\obj\Debug\net5.0\ref\WorldAirlineServer.dll
 D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\obj\Debug\net5.0\WorldAirlineServer.pdb
 D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\obj\Debug\net5.0\WorldAirlineServer.genruntimeconfig.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\bin\Debug\net5.0\Microsoft.Extensions.Configuration.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\bin\Debug\net5.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\WorldAirlineServer\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
