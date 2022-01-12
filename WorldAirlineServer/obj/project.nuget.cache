@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sFeuXpJ/x6BWVadlvCq+JTiWGXIwiClCW/P7Xitmn46WyzPJRGYTiJ8gjvpto5ddsy8+KC31gqrL3R8ys6LZlw==",
+  "dgSpecHash": "bicn43uwNJWkiqHAdrqUX7KOa2vAhCOnk385sIvOfPjnzXQLnojbvnyQsqjJ50N0sITVdc0h0EX+P/Mf/QvK5g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
+  "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WorldAirlineServer\\WorldAirlineServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.core\\3.7.5.9\\awssdk.core.3.7.5.9.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.2.5\\awssdk.dynamodbv2.3.7.2.5.nupkg.sha512",

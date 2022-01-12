@@ -24,10 +24,12 @@ namespace WorldAirlineServer.Controllers
     {
         private AccountManagment _db;
         private AuthManagment _dynamoDbClient;
-        public AccountController(AuthManagment dynamoDbClient, AccountManagment dbClient)
+        private TicketManagment _ticketDb;
+        public AccountController(AuthManagment dynamoDbClient, AccountManagment dbClient, TicketManagment ticketDbClient)
         {
             _db = dbClient;
             _dynamoDbClient = dynamoDbClient;
+            _ticketDb = ticketDbClient;
         }
         [HttpGet]
         [Route("account/get/byId")]
@@ -71,8 +73,30 @@ namespace WorldAirlineServer.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("account/buy/ticket")]
+        public async Task<IActionResult> BuyTicket([FromBody] BuyTicket incomingData)
+        {
+            try
+            {
+                string login = null;
+                if (User.Identity.IsAuthenticated)
+                {
+                    var claimsIdentity = this.User.Identity as ClaimsIdentity;
+                    login = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+                }
+                var response = await _ticketDb.BuyTicketAsync(login, incomingData.Passenger, incomingData.Info);
+
+                return StatusCode(200, response);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(400, e.Message);
+            }
+        }
+
         [HttpPost]
-        [Route("account/signUp")]
+        [Route("account/login")]
         [EnableCors("WACorsPolicy")]
         public async Task<IActionResult> SignUp([FromBody] AccountLogin incomingData)
         {

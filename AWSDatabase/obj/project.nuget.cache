@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BTS3H28pfUiDYgD8FX6HBASJQs1FFdBM1s62IcPc08idbQshVc1l7i7Y3zvxxnG8CR8BHuF09bEz2DEdudoxsQ==",
+  "dgSpecHash": "B2DKvOaCQXzHNvIdcv6+N4kSrwM/rT7V41vHdGm4zb1Q+qfNzHhYVFq3NnGYMEH1Qf5StIpNC+f6jCDGyUxVmw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj",
+  "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.core\\3.7.5.9\\awssdk.core.3.7.5.9.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.2.5\\awssdk.dynamodbv2.3.7.2.5.nupkg.sha512"

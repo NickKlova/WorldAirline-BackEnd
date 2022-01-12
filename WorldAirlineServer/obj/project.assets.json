@@ -5974,11 +5974,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
+      "projectUniqueName": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WorldAirlineServer\\WorldAirlineServer.csproj",
       "projectName": "WorldAirlineServer",
-      "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\WorldAirlineServer.csproj",
+      "projectPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WorldAirlineServer\\WorldAirlineServer.csproj",
       "packagesPath": "C:\\Users\\KlovaNick\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WorldAirlineServer\\obj\\",
+      "outputPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WorldAirlineServer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\KlovaNick\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5995,14 +5995,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj": {
-              "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj"
+            "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj": {
+              "projectPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj"
             },
-            "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\JWTAuth\\JWTAuth.csproj": {
-              "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\JWTAuth\\JWTAuth.csproj"
+            "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\JWTAuth\\JWTAuth.csproj": {
+              "projectPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\JWTAuth\\JWTAuth.csproj"
             },
-            "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj": {
-              "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj"
+            "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WADatabase\\WADatabase.csproj": {
+              "projectPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WADatabase\\WADatabase.csproj"
             }
           }
         }

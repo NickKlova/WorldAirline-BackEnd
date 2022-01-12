@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6pzwxmdDtBpXbFgVBKqjJN8F8OrwYmDd+T0GXiSvjaQN4oFsAEUzDluY3yoaxGazB83uOd89Ec4js9+tTqpIjQ==",
+  "dgSpecHash": "NkqnSSR/LTUcCZT+tRa34RkRNAeJkmaT+m2qZNeeFxDCmMyu9HOMpci8QdSN5C8Ljwh6uiFqzaWb2XxWPnj+hw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\JWTAuth\\JWTAuth.csproj",
+  "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\JWTAuth\\JWTAuth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.15.0\\microsoft.identitymodel.jsonwebtokens.6.15.0.nupkg.sha512",

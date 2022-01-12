@@ -18,6 +18,7 @@ namespace WADatabase.Administration.Managment.Interfaces
         public Task<IEnumerable<Models.API.Response.ReturnTicket.TicketShortInfo>> GetShortInfoUnBookedTicketAsync(int ticketSchemeId);
         public Task CreateTicketSchemeAsync(Models.API.Request.ReceiveTicketScheme incomingTicketScheme);
         public Task CreateTicketsAsync(Models.API.Request.ReceivedTicket incomingTicket);
+        public Task<Models.API.Response.ReturnBuyTicket> BuyTicketAsync(string login, Models.API.Request.ReceivedPassenger passenger, Models.API.Request.ReceivedBuyTicket info);
         public Task FlightStatusChangeByIdAsync(int id, bool status);
         public Task FlightStatusChangeBySchemeIdAsync(int schemeId, bool status);
         public Task UpdateTicketShemePlaneAsync(int schemeId, int planeId);

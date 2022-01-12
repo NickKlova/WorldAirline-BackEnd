@@ -392,5 +392,91 @@ namespace WADatabase.Administration.Managment
                 _db.context.SaveChanges();
             }
         }
+
+        public async Task<ReturnBuyTicket> BuyTicketAsync(string login, ReceivedPassenger passenger, ReceivedBuyTicket info)
+        {
+            await using (_db)
+            {
+                var ticket = _db.context.Tickets
+                    .Include(x => x.Account)
+                    .Include(x => x.Passenger)
+                    .Include(x => x.TicketScheme)
+                    .Include(x => x.TicketScheme.Way.DepartureAirport)
+                    .Include(x => x.TicketScheme.Way.ArrivalAirport)
+                    .Include(x => x.TravelClass)
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.Seat == info.Seat && x.TicketSchemeId == info.TicketSchemeId && x.TravelClass.ClassName == info.TravelClass);
+
+                if (ticket == null)
+                    throw new Exception("The ticket you specified is not in the database!");
+                else if (ticket.Booked == true)
+                    throw new Exception("You cannot purchase this ticket as it was purchased by another person!");
+
+                if (login != null)
+                {
+                    var account = _db.context.Accounts
+                        .ToListAsync()
+                        .Result
+                        .FirstOrDefault(x => x.Login == login);
+
+                    if (account == null)
+                        throw new Exception("Error! Try again!");
+
+                    if (account.Balance - ticket.Price < 0)
+                        throw new Exception("You don't have enough funds to buy this ticket! Top up your account!");
+
+                    account.Balance -= ticket.Price;
+                    ticket.AccountId = account.Id;
+                }
+
+                var passengers = _db.context.Passengers
+                    .ToListAsync()
+                    .Result
+                    .FirstOrDefault(x => x.PassportSeries == passenger.PassportSeries);
+
+                int passId;
+                if (passengers == null)
+                {
+                    Models.DB_Request.Passenger item = new Models.DB_Request.Passenger
+                    {
+                        Name = passenger.Name,
+                        Surname = passenger.Surname,
+                        Email = passenger.Email,
+                        PassportSeries = passenger.PassportSeries
+                    };
+
+                    _db.context.Add(item);
+                    _db.context.SaveChanges();
+
+                    passId = item.Id;
+                }
+                else
+                {
+                    passId = passengers.Id;
+                }
+
+                ticket.PassengerId = passId;
+
+
+                ticket.BaggageWeight = info.BaggageWeight;
+                ticket.Booked = true;
+
+                _db.context.SaveChanges();
+
+                ReturnBuyTicket response = new ReturnBuyTicket
+                {
+                    Code = ticket.Code,
+                    DepartureAirport = ticket.TicketScheme.Way.DepartureAirport.Name,
+                    ArrivalAirport = ticket.TicketScheme.Way.ArrivalAirport.Name,
+                    DepartureDate = ticket.TicketScheme.DepartureDate.ToUniversalTime(),
+                    ArrivalDate = ticket.TicketScheme.ArrivalDate.ToUniversalTime(),
+                    Seat = ticket.Seat,
+                    TravelClass = ticket.TravelClass.ClassName,
+                    Message = "Have a good flight!"
+                };
+                return response;
+            }
+        }
     }
 }

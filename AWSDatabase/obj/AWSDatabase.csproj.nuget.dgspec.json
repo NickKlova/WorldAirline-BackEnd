@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj": {}
+    "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj": {
+    "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj",
+        "projectUniqueName": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj",
         "projectName": "AWSDatabase",
-        "projectPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\AWSDatabase.csproj",
+        "projectPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\AWSDatabase.csproj",
         "packagesPath": "C:\\Users\\KlovaNick\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\AWSDatabase\\obj\\",
+        "outputPath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\AWSDatabase\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\KlovaNick\\AppData\\Roaming\\NuGet\\NuGet.Config",

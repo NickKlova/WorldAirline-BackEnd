@@ -10,3 +10,15 @@ C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\JWTAuth\obj\
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\JWTAuth\obj\Debug\net5.0\JWTAuth.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\JWTAuth\obj\Debug\net5.0\ref\JWTAuth.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\JWTAuth\obj\Debug\net5.0\JWTAuth.pdb
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\bin\Debug\net5.0\JWTAuth.deps.json
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\bin\Debug\net5.0\JWTAuth.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\bin\Debug\net5.0\ref\JWTAuth.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\bin\Debug\net5.0\JWTAuth.pdb
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.csproj.AssemblyReference.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.GeneratedMSBuildEditorConfig.editorconfig
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.AssemblyInfoInputs.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.AssemblyInfo.cs
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.csproj.CoreCompileInputs.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\ref\JWTAuth.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\JWTAuth\obj\Debug\net5.0\JWTAuth.pdb

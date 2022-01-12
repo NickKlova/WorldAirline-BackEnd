@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k79V7Iqde64JHEtHn3w2MuC5THdnEK4tIegLZBWpkVifSHQaVET1rpP4L96rJ622jHs3FJb7r5YsW+RmsKkAOA==",
+  "dgSpecHash": "Yvb2f6URD7QAMxCnURh6wsQSAxIKgfA43yF1qwMW8iznaz1MaLk49lyjiuidv4E7v9D8vWK7E9rVuuy/FqRVtw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\KlovaNick\\Desktop\\WorldAirlines\\BackEnd\\WorldAirlineServer\\WADatabase\\WADatabase.csproj",
+  "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WADatabase\\WADatabase.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KlovaNick\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\libphonenumber-csharp\\8.12.38\\libphonenumber-csharp.8.12.38.nupkg.sha512",
