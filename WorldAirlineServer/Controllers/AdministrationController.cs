@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,8 @@ namespace WorldAirlineServer.Controllers
         }
         [HttpPatch]
         [Route("/admin/change/balance")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeBalance(string login, decimal amount)
         {
             try
@@ -37,6 +41,8 @@ namespace WorldAirlineServer.Controllers
 
         [HttpPatch]
         [Route("/admin/give/permissions")]
+        [EnableCors("WACorsPolicy")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GivePermissions([FromQuery] string login, [FromQuery] string role)
         {
             try

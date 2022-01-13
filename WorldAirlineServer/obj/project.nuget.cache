@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HsFivuLZkGPGd7rS5b/EYDKUGNFo1Wee6p5/ApByP5QEZ25etQdM/lJEBhs/omiLZpWI0Xfz8BhSBrypcAei4A==",
+  "dgSpecHash": "WwCxbA2gpLuvAqrcOea6B1nWdV01O2s4y0OlvQ3VZnKQ7krZD7jVaBE5C8HLlQ2COj5yvV1JA551jD5yOPbldw==",
   "success": true,
   "projectFilePath": "D:\\Studies\\WorldAirlines\\WorldAirline-BackEnd\\WorldAirlineServer\\WorldAirlineServer.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\restsharp\\107.0.3\\restsharp.107.0.3.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
@@ -105,6 +106,7 @@
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.text.encoding.extensions\\4.3.0\\system.text.encoding.extensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\KlovaNick\\.nuget\\packages\\system.text.json\\5.0.0\\system.text.json.5.0.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.text.regularexpressions\\4.3.0\\system.text.regularexpressions.4.3.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\KlovaNick\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",

@@ -39,7 +39,7 @@ namespace WADatabase.Administration.Managment
                     ReturnWay item = new ReturnWay
                     {
                         Id = way.Id,
-                        FlightDuration = way.FlightDuration,
+                        FlightDuration = way.FlightDuration.TotalMinutes.ToString() + "minutes",
                         DepartureAirport = new ReturnAirport
                         {
                             Id = way.DepartureAirport.Id,
@@ -90,7 +90,7 @@ namespace WADatabase.Administration.Managment
                 ReturnWay response = new ReturnWay
                 {
                     Id = way.Id,
-                    FlightDuration = way.FlightDuration,
+                    FlightDuration = way.FlightDuration.TotalMinutes.ToString() + " minutes",
                     DepartureAirport = new ReturnAirport
                     {
                         Id = way.DepartureAirport.Id,

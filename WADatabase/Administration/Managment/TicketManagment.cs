@@ -226,6 +226,12 @@ namespace WADatabase.Administration.Managment
         }
         public async Task CreateTicketsAsync(ReceivedTicket incomingTicket)
         {
+            if (incomingTicket.Seat > 51 || incomingTicket.Seat < 0)
+                throw new Exception("Enter correct seats!");
+
+            if (incomingTicket.TicketAmount > 50 || incomingTicket.TicketAmount < 0)
+                throw new Exception("Enter correct tickets amount!");
+
             await using (_db)
             {
                 var classes = _db.context.TravelClasses
@@ -394,6 +400,12 @@ namespace WADatabase.Administration.Managment
 
         public async Task<ReturnBuyTicket> BuyTicketAsync(string login, ReceivedPassenger passenger, ReceivedBuyTicket info)
         {
+            if (info.Seat > 100 || info.Seat < 0)
+                throw new Exception("Enter correct seat!");
+
+            if (info.BaggageWeight < 0 || info.BaggageWeight > 70)
+                throw new Exception("Enter correct baggage weight!");
+
             await using (_db)
             {
                 var ticket = _db.context.Tickets
@@ -452,7 +464,25 @@ namespace WADatabase.Administration.Managment
                 }
                 else
                 {
-                    passId = passengers.Id;
+                    if(passengers.Name == passenger.Name && passengers.Surname == passenger.Surname)
+                    {
+                        passId = passengers.Id;
+                    }
+                    else
+                    {
+                        Models.DB_Request.Passenger item = new Models.DB_Request.Passenger
+                        {
+                            Name = passenger.Name,
+                            Surname = passenger.Surname,
+                            Email = passenger.Email,
+                            PassportSeries = passenger.PassportSeries
+                        };
+
+                        _db.context.Add(item);
+                        _db.context.SaveChanges();
+
+                        passId = item.Id;
+                    }
                 }
 
                 ticket.PassengerId = passId;
