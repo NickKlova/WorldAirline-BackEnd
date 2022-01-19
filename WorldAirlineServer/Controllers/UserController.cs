@@ -14,6 +14,8 @@ using WADatabase.Administration.Managment;
 using WADatabase.Models.API.Request;
 using WorldAirlineServer.Models.Account;
 using WorldAirlineServer.Models.Account.Request;
+using AWSDatabase.Administration.Interfaces;
+using WADatabase.Administration.Managment.Interfaces;
 
 namespace WorldAirlineServer.Controllers
 {
@@ -21,10 +23,10 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private TicketManagment _db;
-        private AccountManagment _accountDb;
-        private AuthManagment _dynamoDbClient;
-        public UserController(TicketManagment dbClient, AccountManagment accountDbClient, AuthManagment dynamoDbClient)
+        private readonly ITicket _db;
+        private readonly IAccount _accountDb;
+        private readonly IAuth _dynamoDbClient;
+        public UserController(ITicket dbClient, IAccount accountDbClient, IAuth dynamoDbClient)
         {
             _db = dbClient;
             _accountDb = accountDbClient;
@@ -48,21 +50,22 @@ namespace WorldAirlineServer.Controllers
                 else
                 {
                     var awsModel = await _dynamoDbClient.GetTokenByLoginAsync(incomingData.Login);
-                    string refToken;
-                    if (awsModel == null)
-                    {
-                        refToken = TokenSetUp.GenerateRefreshToken();
-                    }
-                    else
-                    {
-                        refToken = awsModel.refreshToken;
-                    }
 
+                    string refToken = TokenSetUp.GenerateRefreshToken();
                     RefreshToken data = new RefreshToken
                     {
                         login = incomingData.Login,
                         refreshToken = refToken
                     };
+
+                    if (awsModel != null)
+                    {
+                        await _dynamoDbClient.ChangeTokenByLoginAsync(awsModel.login, refToken);
+                    }
+                    else
+                    {
+                        await _dynamoDbClient.CreateRecord(data);
+                    }
 
                     var response = new TokenResponse
                     {

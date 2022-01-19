@@ -10,3 +10,15 @@ C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\AWSDatabase\
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\AWSDatabase\obj\Debug\net5.0\AWSDatabase.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\AWSDatabase\obj\Debug\net5.0\ref\AWSDatabase.dll
 C:\Users\KlovaNick\Desktop\WorldAirlines\BackEnd\WorldAirlineServer\AWSDatabase\obj\Debug\net5.0\AWSDatabase.pdb
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\bin\Debug\net5.0\AWSDatabase.deps.json
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\bin\Debug\net5.0\AWSDatabase.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\bin\Debug\net5.0\ref\AWSDatabase.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\bin\Debug\net5.0\AWSDatabase.pdb
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.csproj.AssemblyReference.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.GeneratedMSBuildEditorConfig.editorconfig
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.AssemblyInfoInputs.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.AssemblyInfo.cs
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.csproj.CoreCompileInputs.cache
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\ref\AWSDatabase.dll
+D:\Studies\WorldAirlines\WorldAirline-BackEnd\AWSDatabase\obj\Debug\net5.0\AWSDatabase.pdb

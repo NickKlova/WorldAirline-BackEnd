@@ -20,7 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
+using WADatabase.Administration.Managment.Interfaces;
 using WADatabase.Administration.Managment;
+using AWSDatabase.Administration.Interfaces;
 
 namespace WorldAirlineServer
 {
@@ -62,17 +64,17 @@ namespace WorldAirlineServer
             services.AddSingleton<IAmazonDynamoDB>(client);
             services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
 
-            services.AddSingleton<AuthManagment>();
-            services.AddSingleton<AccountManagment>();
+            services.AddSingleton<IAuth, AuthManagment>();
+            services.AddSingleton<IAccount, AccountManagment>();
             services.AddSingleton<WorldAirlinesClient>();
-            services.AddSingleton<AirportManagment>();
-            services.AddSingleton<CrewManagment>();
-            services.AddSingleton<PassengerManagment>();
-            services.AddSingleton<PilotManagment>();
-            services.AddSingleton<PlaneManagment>();
-            services.AddSingleton<RoleManagment>();
-            services.AddSingleton<TicketManagment>();
-            services.AddSingleton<WayManagment>();
+            services.AddSingleton<IAirport, AirportManagment>();
+            services.AddSingleton<ICrew, CrewManagment>();
+            services.AddSingleton<IPassenger, PassengerManagment>();
+            services.AddSingleton<IPilot, PilotManagment>();
+            services.AddSingleton<IPlane, PlaneManagment>();
+            services.AddSingleton<IRole, RoleManagment>();
+            services.AddSingleton<ITicket, TicketManagment>();
+            services.AddSingleton<IWay, WayManagment>();
 
             string authSecretKEY = Configuration.GetValue<string>("jwt:encryption_code");
             AuthConfiguration.KEY = authSecretKEY;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,5 +17,6 @@ namespace WADatabase.Administration.Managment.Interfaces
         public Task ChangeAccountPasswordAsync(string login, string oldPassword, string newPassword);
         public Task ChangeAccountBalanceAsync(decimal amount, string login);
         public Task DeleteAccountAsync(string login);
+        public Task<ClaimsIdentity> GetIdentity(string login, string password);
     }
 }

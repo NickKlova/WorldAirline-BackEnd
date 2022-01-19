@@ -11,7 +11,7 @@ namespace WADatabase.Administration.Managment
 {
     public class CrewManagment : Interfaces.ICrew
     {
-        private WorldAirlinesClient _db;
+        private readonly WorldAirlinesClient _db;
         public CrewManagment(WorldAirlinesClient dbClient)
         {
             _db = dbClient;
@@ -71,11 +71,11 @@ namespace WADatabase.Administration.Managment
                 return response;
             }
         }
-        public async Task AddPilotToCrewAsync(string login, int schemeId, string pos)
+        public async Task AddPilotToCrewAsync(string login, int schemeId, int positionId)
         {
             await using (_db)
             {
-                var pilot = _db.context.Pilots
+               var pilot = _db.context.Pilots
                     .Include(x => x.Account)
                     .ToListAsync()
                     .Result
@@ -84,7 +84,7 @@ namespace WADatabase.Administration.Managment
                 var position = _db.context.Positions
                     .ToListAsync()
                     .Result
-                    .FirstOrDefault(x => x.PositionName == pos);
+                    .FirstOrDefault(x => x.Id == positionId);
 
                 if (pilot == null || position == null)
                     throw new Exception("Bad data!");
@@ -97,6 +97,7 @@ namespace WADatabase.Administration.Managment
                 };
 
                 _db.context.Add(crew);
+                _db.context.SaveChanges();
             }
         }
         public async Task DeletePilotFromCrewAsync(string login)

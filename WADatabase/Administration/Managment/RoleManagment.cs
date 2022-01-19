@@ -11,7 +11,7 @@ namespace WADatabase.Administration.Managment
 {
     public class RoleManagment : Interfaces.IRole
     {
-        private WorldAirlinesClient _db;
+        private readonly WorldAirlinesClient _db;
         public RoleManagment(WorldAirlinesClient dbClient)
         {
             _db = dbClient;

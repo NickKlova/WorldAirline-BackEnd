@@ -13,12 +13,12 @@ namespace WADatabase.Administration.Managment
 {
     public class TicketManagment : Interfaces.ITicket
     {
-        private WorldAirlinesClient _db;
-        private AccountManagment _accountDb;
-        private PassengerManagment _passengerDb;
-        private PlaneManagment _planeDb;
-        private WayManagment _wayDb;
-        public TicketManagment(WorldAirlinesClient dbClient, AccountManagment accountClient, PassengerManagment passengerClient, PlaneManagment planeClient, WayManagment wayClient)
+        private readonly WorldAirlinesClient _db;
+        private readonly Interfaces.IAccount _accountDb;
+        private readonly Interfaces.IPassenger _passengerDb;
+        private readonly Interfaces.IPlane _planeDb;
+        private readonly Interfaces.IWay _wayDb;
+        public TicketManagment(WorldAirlinesClient dbClient, Interfaces.IAccount accountClient, Interfaces.IPassenger passengerClient, Interfaces.IPlane planeClient, Interfaces.IWay wayClient)
         {
             _db = dbClient;
             _accountDb = accountClient;

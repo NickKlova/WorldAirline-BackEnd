@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Managment;
+using WADatabase.Administration.Managment.Interfaces;
 using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
@@ -14,8 +15,8 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        private TicketManagment _db;
-        public TicketController(TicketManagment dbClient)
+        private readonly ITicket _db;
+        public TicketController(ITicket dbClient)
         {
             _db = dbClient;
         }

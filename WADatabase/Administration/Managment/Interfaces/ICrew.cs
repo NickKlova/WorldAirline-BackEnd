@@ -9,7 +9,7 @@ namespace WADatabase.Administration.Managment.Interfaces
     public interface ICrew
     {
         public Task<IEnumerable<Models.API.Response.ReturnPilotCrew>> GetCrewByTicketSchemeAsync(int ticketId);
-        public Task AddPilotToCrewAsync(string login, int schemeId, string pos);
+        public Task AddPilotToCrewAsync(string login, int schemeId, int positionId);
         public Task DeletePilotFromCrewAsync(string login);
         public Task DeleteCrewAsync(int ticketId);
     }

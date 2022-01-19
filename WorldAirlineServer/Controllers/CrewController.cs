@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Clients;
 using WADatabase.Administration.Managment;
+using WADatabase.Administration.Managment.Interfaces;
 
 namespace WorldAirlineServer.Controllers
 {
@@ -15,8 +16,8 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class CrewController : ControllerBase
     {
-        private CrewManagment _db;
-        public CrewController(CrewManagment dbClient)
+        private readonly ICrew _db;
+        public CrewController(ICrew dbClient)
         {
             _db = dbClient;
         }
@@ -46,11 +47,11 @@ namespace WorldAirlineServer.Controllers
         [Route("crew/add/pilot")]
         [EnableCors("WACorsPolicy")]
         [Authorize(Roles = "admin, moderator")]
-        public async Task<IActionResult> AddPilot([FromQuery] string pilotLogin, [FromQuery] int ticketId, [FromQuery] string position)
+        public async Task<IActionResult> AddPilot([FromQuery] string pilotLogin, [FromQuery] int ticketId, [FromQuery] int positionId)
         {
             try
             {
-                await _db.AddPilotToCrewAsync(pilotLogin, ticketId, position);
+                await _db.AddPilotToCrewAsync(pilotLogin, ticketId, positionId);
 
                 return StatusCode(200);
             }

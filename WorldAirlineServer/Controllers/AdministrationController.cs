@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Managment;
+using WADatabase.Administration.Managment.Interfaces;
 
 namespace WorldAirlineServer.Controllers
 {
@@ -14,9 +15,9 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class AdministrationController : ControllerBase
     {
-        private RoleManagment _roleDb;
-        private AccountManagment _accountDb;
-        public AdministrationController(RoleManagment roleDbClient, AccountManagment accountDbClient)
+        private readonly IRole _roleDb;
+        private readonly IAccount _accountDb;
+        public AdministrationController(IRole roleDbClient, IAccount accountDbClient)
         {
             _roleDb = roleDbClient;
             _accountDb = accountDbClient;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AWSDatabase.Administration.Managment
 {
-    public class AuthManagment 
+    public class AuthManagment : Interfaces.IAuth
     {
         private string _tableName;
         private readonly IAmazonDynamoDB _dynamoDb;

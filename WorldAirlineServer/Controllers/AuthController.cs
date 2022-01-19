@@ -1,5 +1,6 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
+using AWSDatabase.Administration.Interfaces;
 using AWSDatabase.Administration.Managment;
 using AWSDatabase.Extensions;
 using AWSDatabase.Models.AmazonResponse;
@@ -22,8 +23,8 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public readonly AuthManagment _dynamoDbClient;
-        public AuthController(AuthManagment dynamoDbClient)
+        public readonly IAuth _dynamoDbClient;
+        public AuthController(IAuth dynamoDbClient)
         {
             _dynamoDbClient = dynamoDbClient;
         }
@@ -31,7 +32,6 @@ namespace WorldAirlineServer.Controllers
         [HttpPost]
         [Route("auth/refreshToken")]
         [EnableCors("WACorsPolicy")]
-        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokens incomingData)
         {
             var principal = TokenSetUp.GetPrincipalFromExpiredToken(incomingData.Token);

@@ -12,7 +12,7 @@ namespace WADatabase.Administration.Managment
 {
     public class AccountManagment : Interfaces.IAccount
     {
-        private WorldAirlinesClient _db;
+        private readonly WorldAirlinesClient _db;
         public AccountManagment(WorldAirlinesClient dbClient)
         {
             _db = dbClient;

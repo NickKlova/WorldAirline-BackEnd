@@ -41,7 +41,7 @@ namespace JWTAuth.Settings
                 audience: AuthConfiguration.AUDIENCE,
                 claims: claims, 
                 notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddMinutes(5),
+                expires: DateTime.UtcNow.AddMinutes(1440),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
 

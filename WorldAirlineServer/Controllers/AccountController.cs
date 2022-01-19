@@ -15,6 +15,8 @@ using WADatabase.Administration.Managment;
 using WADatabase.Models.API.Request;
 using WorldAirlineServer.Models.Account;
 using WorldAirlineServer.Models.Account.Request;
+using AWSDatabase.Administration.Interfaces;
+using WADatabase.Administration.Managment.Interfaces;
 
 namespace WorldAirlineServer.Controllers
 {
@@ -22,9 +24,9 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private AccountManagment _db;
-        private AuthManagment _dynamoDbClient;
-        public AccountController(AuthManagment dynamoDbClient, AccountManagment dbClient)
+        private readonly IAccount _db;
+        private readonly IAuth _dynamoDbClient;
+        public AccountController(IAuth dynamoDbClient, IAccount dbClient)
         {
             _db = dbClient;
             _dynamoDbClient = dynamoDbClient;

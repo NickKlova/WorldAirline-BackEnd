@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WADatabase.Administration.Managment;
+using WADatabase.Administration.Managment.Interfaces;
 using WADatabase.Models.API.Request;
 
 namespace WorldAirlineServer.Controllers
@@ -15,8 +16,8 @@ namespace WorldAirlineServer.Controllers
     [ApiController]
     public class PlaneController : ControllerBase
     {
-        private PlaneManagment _db;
-        public PlaneController(PlaneManagment dbClient)
+        private readonly IPlane _db;
+        public PlaneController(IPlane dbClient)
         {
             _db = dbClient;
         }

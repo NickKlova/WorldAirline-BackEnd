@@ -27,5 +27,6 @@ namespace WADatabase.Administration.Managment.Interfaces
         public Task UpdateTicketPriceAsync(int ticketSchemeId, decimal price);
         public Task DeleteTicketSchemeAsync(int ticketSchemeId);
         public Task DeleteTicketsAsync(int ticketScheme);
+        public Task DeleteTicketAsync(int ticketId);
     }
 }
